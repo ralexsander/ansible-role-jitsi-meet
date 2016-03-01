@@ -1,7 +1,11 @@
 ---
 - include: packages.yml
 
-- include: configure.yml
+- include: prosody.yml
+
+- include: jitsi_meet.yml
+
+- include: jicofo.yml
 
 - include: nginx.yml
 

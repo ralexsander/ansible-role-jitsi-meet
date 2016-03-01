@@ -1,0 +1,19 @@
+---
+- name: Set hostname in Jicofo config.
+  template:
+    dest: /etc/jitsi/jicofo/config
+    src: jicofo_config.j2
+    owner: root
+    group: root
+    mode: "0644"
+  notify: restart jicofo
+
+- name: Set hostname in Videobridge config.
+  template:
+    dest: /etc/jitsi/videobridge/config
+    src: videobridge_config.j2
+    owner: root
+    group: root
+    mode: "0644"
+  notify: restart jitsi-videobridge
+
