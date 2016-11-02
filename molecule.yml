@@ -8,7 +8,9 @@ molecule:
 
 verifier:
     name: testinfra
-    hosts: jitsi-meet-stable,jitsi-meet-unstable
+    options:
+      sudo: True
+      verbose: True
 
 vagrant:
   platforms:
