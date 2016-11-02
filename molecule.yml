@@ -8,6 +8,7 @@ molecule:
 
 verifier:
     name: testinfra
+    hosts: jitsi-meet-stable,jitsi-meet-unstable
 
 vagrant:
   platforms:
