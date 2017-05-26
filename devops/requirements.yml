@@ -1,0 +1,9 @@
+---
+- name: jdauphant.nginx
+
+- src: https://github.com/freedomofpress/ansible-role-openssl-node.git
+  name: freedomofpress.openssl_node
+
+- src: https://github.com/freedomofpress/ansible-role-java.git
+  name: geerlingguy.java
+  version: JDK8-Jessie

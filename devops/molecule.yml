@@ -1,0 +1,36 @@
+---
+ansible:
+  verbose: v
+  diff: yes
+  config_file: ./ansible.cfg
+  host_key_checking: False
+
+driver:
+  name: docker
+
+docker:
+  containers:
+    - name: jitsi-meet
+      ansible_groups:
+        - meet-servers
+      image: msheiny/debian-jessie-systemd
+      image_version: latest
+      build_image: False
+      command: /lib/systemd/systemd
+      privileged: True
+      port_bindings:
+        443: 4443
+        "10000/udp": "10000/udp"
+        "10001/udp": "10001/udp"
+        "10002/udp": "10002/udp"
+        "10003/udp": "10003/udp"
+        "10004/udp": "10004/udp"
+
+      volume_mounts:
+        - "/sys/fs/cgroup:/sys/fs/cgroup:ro"
+
+molecule:
+  ignore_paths:
+    # Don't lint upstream libraries
+    - .venv
+    - roles

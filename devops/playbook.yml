@@ -1,0 +1,93 @@
+#!/usr/bin/env ansible-playbook
+---
+- name: Configure Java and a slew of PAX hackery
+  hosts: meet-servers
+  become: yes
+  pre_tasks:
+    - name: Install paxctld under GRSEC
+      package:
+        name: paxctld
+      when: "'grsec' in ansible_kernel"
+      tags: java
+
+    - name: Ensure java is whitelisted under GRSEC
+      lineinfile:
+        dest: /etc/paxctld.conf
+        line: "/usr/lib/jvm/{{ item[0] }}/jre/bin/{{ item[1] }}  m"
+        regexp: "^/usr/lib/jvm/{{ item[0] }}/jre/bin/{{ item[1] }}"
+      with_nested:
+        - ["{{ pax_java7_dir }}", "{{ pax_java8_dir }}"]
+        - ["java", "keytool"]
+      when: "'grsec' in ansible_kernel"
+      notify: restart pax
+      tags: java
+  roles:
+    - role: geerlingguy.java
+      tags: java
+      ignore_errors: true
+  post_tasks:
+    - name: Hacky Ugly No Good Pax Hack
+      service:
+        name: paxctld
+        state: restarted
+        enabled: true
+      when: "'grsec' in ansible_kernel"
+      tags: java
+  vars:
+    java_packages:
+      - openjdk-8-jdk
+    pax_java8_dir: java-8-openjdk-amd64
+    pax_java7_dir: java-7-openjdk-amd64
+  handlers:
+    - name: restart pax
+      service:
+        name: paxctld
+        state: restarted
+        enabled: true
+
+- name: Configure Jitsi Meet videoconference server.
+  hosts: meet-servers
+  become: yes
+  roles:
+    - role: freedomofpress.openssl_node
+      tags:
+        - ssl
+        - nginx
+
+    - role: freedomofpress.jitsi-meet
+      tags: jitsi
+
+    - role: jdauphant.nginx
+      tags:
+        - nginx
+      nginx_sites:
+        default:
+          - listen 80
+          - return 301 https://localhost:4443$request_uri
+        jitsi:
+          - listen 443 ssl
+          - ssl_certificate /etc/ssl/certs/{{ansible_fqdn}}.pem
+          - ssl_certificate_key /etc/ssl/private/{{ansible_fqdn}}-key.pem
+          - root /usr/share/jitsi-meet
+          - index index.html index.htm
+          - location /config.js {
+              alias /etc/jitsi/meet/{{ jitsi_meet_server_name }}-config.js;
+            }
+          - location ~ ^/([a-zA-Z0-9=\?]+)$ { rewrite ^/(.*)$ / break; }
+          - location / { ssi on; }
+          - location /http-bind {
+              proxy_pass      http://localhost:5280/http-bind;
+              proxy_set_header X-Forwarded-For $remote_addr;
+              proxy_set_header Host $http_host;
+              }
+          - location ~ /external_api.* { root /usr/share/jitsi-meet/libs; }
+
+  vars:
+    jitsi_meet_server_name: localhost
+    jitsi_meet_configure_firewall: false
+    jitsi_meet_configure_nginx: false
+    jitsi_meet_bosh_url: https://localhost:4443/http-bind
+    jitsi_meet_base_packages:
+      - apt-transport-https
+    jitsi_meet_cleanup_configs: false
+
