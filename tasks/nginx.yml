@@ -6,10 +6,11 @@
     owner: root
     group: root
     mode: "0644"
-  notify: restart nginx
-  # Skip unless role was called with custom SSL certs
-  when: jitsi_meet_ssl_cert_path != '' and
-        jitsi_meet_ssl_key_path != ''
+  notify:
+    - restart nginx
+    - restart jitsi-videobridge
+    - restart jicofo
+    - restart prosody
 
 - name: Deactivate default Nginx site.
   file:
@@ -22,4 +23,8 @@
     path: "/etc/nginx/sites-enabled/{{ jitsi_meet_server_name }}.conf"
     src: "/etc/nginx/sites-available/{{ jitsi_meet_server_name }}.conf"
     state: link
-  notify: restart nginx
+  notify:
+    - restart nginx
+    - restart jitsi-videobridge
+    - restart jicofo
+    - restart prosody

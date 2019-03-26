@@ -1,4 +1,12 @@
 ---
+
+# - name: Verificando compatibilidad del sistema operativo (Debian 9+)
+#   assert:
+#     that:
+#       - ansible_facts['distribution'] == "Debian"
+#       - ansible_facts['distribution_major_version'] | int >= 9
+#     msg: "Ejecución abortada. El sistema operativo debe ser Debian(9) Stretch."
+
 - include: packages.yml
 
   # Read Jitsi Meet config files and extract secrets for use in template configs.
@@ -11,17 +19,18 @@
 
 - include: jicofo.yml
 
+# - include_role:     # Galaxy role for install certbot and generate Let's Encrypt certificates
+#     name: geerlingguy.certbot
+#   when: jitsi_meet_configure_letsencrypt_certificates
+
 - include: nginx.yml
   when: jitsi_meet_configure_nginx
 
 - include: clean_up_default_configs.yml
-  when: (jitsi_meet_ssl_cert_path != '' and
-         jitsi_meet_ssl_key_path != '') or
-         not jitsi_meet_configure_nginx
-
+  when: not jitsi_meet_configure_nginx
 
 - include: ufw.yml
-  when: jitsi_meet_configure_firewall == true
+  when: jitsi_meet_configure_firewall
 
   # Placing the browser extensions last so the associated debugging tasks
   # that display URLs are visible near the end of the play.
