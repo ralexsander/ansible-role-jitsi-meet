@@ -15,7 +15,7 @@ server {
     ssl_prefer_server_ciphers on;
     ssl_ciphers "EECDH+ECDSA+AESGCM:EECDH+aRSA+AESGCM:EECDH+ECDSA+SHA256:EECDH+aRSA+SHA256:EECDH+ECDSA+SHA384:EECDH+ECDSA+SHA256:EECDH+aRSA+SHA384:EDH+aRSA+AESGCM:EDH+aRSA+SHA256:EDH+aRSA:EECDH:!aNULL:!eNULL:!MEDIUM:!LOW:!3DES:!MD5:!EXP:!PSK:!SRP:!DSS:!RC4:!SEED";
 
-    {% if (not jitsi_meet_configure_letsencrypt_certificates)%}#{% endif %} add_header Strict-Transport-Security "max-age=31536000";
+    {% if (jitsi_meet_ssl_cert_path == '' and jitsi_meet_ssl_key_path == '') %}#{% endif %} add_header Strict-Transport-Security "max-age=31536000";
 
     ssl_certificate {{ jitsi_meet_ssl_cert_path }};
     ssl_certificate_key {{ jitsi_meet_ssl_key_path }};

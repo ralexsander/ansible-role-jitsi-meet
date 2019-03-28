@@ -1,5 +1,4 @@
 ---
-
 - name: Install base apt packages.
   apt:
     name: "{{ jitsi_meet_base_packages }}"
@@ -56,8 +55,8 @@
     state: latest
     update_cache: yes
     cache_valid_time: 3600
-  notify:
-    - restart nginx
-    - restart jitsi-videobridge
-    - restart jicofo
-    - restart prosody
+  # notify:
+  #   - restart nginx
+  #   - restart jitsi-videobridge
+  #   - restart jicofo
+  #   - restart prosody

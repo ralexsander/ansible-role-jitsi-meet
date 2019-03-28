@@ -1,8 +1,8 @@
 VirtualHost "{{ jitsi_meet_server_name }}"
     authentication = "{{ jitsi_meet_authentication }}"
     ssl = {
-        key = "{{ jitsi_meet_ssl_key_path }}";
-        certificate = "{{ jitsi_meet_ssl_cert_path }}";
+        key = "/var/lib/prosody/{{ jitsi_meet_server_name }}.key";
+        certificate = "/var/lib/prosody/{{ jitsi_meet_server_name }}.crt";
     }
 
     modules_enabled = {

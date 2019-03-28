@@ -15,8 +15,8 @@ jitsi_meet_server_name: "{{ inventory_hostname if (jitsi_meet_configure_nginx) e
 # The default cert files are /var/lib/prosody/localhost.{crt,key}
 # NOT setting them here, because empty strings for custom certs will
 # cause the custom Nginx config tasks to be skipped.
-jitsi_meet_ssl_cert_path: "{% if (jitsi_meet_configure_letsencrypt_certificates) %}/etc/letsencrypt/live/{{ jitsi_meet_server_name }}/fullchain.pem{% else %}/etc/jitsi/meet/{{ jitsi_meet_server_name }}.crt{% endif %}"
-jitsi_meet_ssl_key_path: "{% if (jitsi_meet_configure_letsencrypt_certificates) %}/etc/letsencrypt/live/{{ jitsi_meet_server_name }}/privkey.pem{% else %}/etc/jitsi/meet/{{ jitsi_meet_server_name }}.key{% endif %}"
+jitsi_meet_ssl_cert_path: ''
+jitsi_meet_ssl_key_path: ''
 
 # List of packages that need to be installed before jitsi meet
 jitsi_meet_base_packages:
@@ -112,35 +112,3 @@ jitsi_meet_configure_firewall: true
 # Role will automatically install nginx and configure a vhost for use with jitsi-meet.
 # If you prefer to manage web vhosts via a separate role, set this to false.
 jitsi_meet_configure_nginx: true
-
-
-# Role will automatically configure Let's Encrypt certificates for the jitsi-meet site
-jitsi_meet_configure_letsencrypt_certificates: true
-
-
-##### Certbot paramenters used by the role geerlingguy.certbot
-# Certbot auto-renew cron job configuration (for certificate renewals).
-certbot_auto_renew: true
-certbot_auto_renew_user: "root" #"{{ ansible_user | default(lookup('env', 'USER')) }}"
-certbot_auto_renew_hour: 2
-certbot_auto_renew_minute: 31
-certbot_auto_renew_options: "--quiet --no-self-upgrade"
-
-# Parameters used when creating new Certbot certs.
-certbot_create_if_missing: true
-certbot_create_method: standalone
-certbot_admin_email: adminsys@myorganization.com
-certbot_certs:
-  - domains:
-      - "{{ jitsi_meet_server_name }}"
-
-certbot_create_command: >-
-  {{ certbot_script }} certonly --standalone --noninteractive --agree-tos
-  --email {{ cert_item.email | default(certbot_admin_email) }}
-  -d {{ cert_item.domains | join(',') }}
-
-certbot_create_standalone_stop_services:
-  #- nginx
-  - prosody
-  - jicofo
-  - jitsi-videobridge

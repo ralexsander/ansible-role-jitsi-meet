@@ -6,11 +6,7 @@
     owner: root
     group: root
     mode: "0644"
-  notify:
-    - restart nginx
-    - restart jitsi-videobridge
-    - restart jicofo
-    - restart prosody
+  notify: restart nginx
 
 - name: Deactivate default Nginx site.
   file:
@@ -23,8 +19,4 @@
     path: "/etc/nginx/sites-enabled/{{ jitsi_meet_server_name }}.conf"
     src: "/etc/nginx/sites-available/{{ jitsi_meet_server_name }}.conf"
     state: link
-  notify:
-    - restart nginx
-    - restart jitsi-videobridge
-    - restart jicofo
-    - restart prosody
+  notify: restart nginx
