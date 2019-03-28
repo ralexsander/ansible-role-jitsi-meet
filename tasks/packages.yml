@@ -10,8 +10,6 @@
   apt:
     name: nginx
     state: latest
-  # notify:
-  #   - restart nginx
   when: jitsi_meet_configure_nginx
 
 # Prior versions of the role were writing to this file, let's
@@ -55,8 +53,3 @@
     state: latest
     update_cache: yes
     cache_valid_time: 3600
-  # notify:
-  #   - restart nginx
-  #   - restart jitsi-videobridge
-  #   - restart jicofo
-  #   - restart prosody
