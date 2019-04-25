@@ -112,3 +112,23 @@ jitsi_meet_configure_firewall: true
 # Role will automatically install nginx and configure a vhost for use with jitsi-meet.
 # If you prefer to manage web vhosts via a separate role, set this to false.
 jitsi_meet_configure_nginx: true
+
+
+
+
+# UI customization
+jitsi_meet_customize_the_ui: true
+
+jitsi_meet_lang: 'en'
+jitsi_meet_appname: 'My appname'
+jitsi_meet_org_link: 'https://my-organization.com'
+jitsi_meet_welcomepage_title: 'My welcome page title'
+jitsi_meet_welcomepage_description: 'My welcome page description'
+jitsi_meet_welcomepage_enterRoom: 'My enter room message'
+
+jitsi_meet_default_background: '#474747'
+jitsi_meet_disable_video_background: 'false'
+jitsi_meet_default_remote_display_name: 'Fellow Jitster'
+jitsi_meet_default_local_display_name: 'me'
+jitsi_meet_generate_roomnames_on_welcome_page: 'true'
+jitsi_meet_lang_detection: 'false'    # Allow i18n to detect the system language

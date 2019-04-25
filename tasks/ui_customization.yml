@@ -1,0 +1,64 @@
+---
+- name: Set archivo de configuración de aplicación de Jitsi Meet
+  template:
+    dest: "/usr/share/jitsi-meet/interface_config.js"
+    src: interface_config.js.j2
+    owner: root
+    group: root
+    mode: "0644"
+  notify:
+    - restart nginx
+    - restart jitsi-videobridge
+    - restart jicofo
+    - restart prosody
+
+- name: Set archivo de configuración de títulos de Jitsi Meet
+  template:
+    dest: "/usr/share/jitsi-meet/title.html"
+    src: title.html.j2
+    owner: root
+    group: root
+    mode: "0644"
+  notify:
+    - restart nginx
+    - restart jitsi-videobridge
+    - restart jicofo
+    - restart prosody
+
+# - name: Set archivo de configuración de idioma de Jitsi Meet
+#   template:
+#     dest: "/usr/share/jitsi-meet/lang/main-es.json"
+#     src: main-es.json.j2
+#     owner: root
+#     group: root
+#     mode: "0644"
+#   notify:
+#     - restart nginx
+#     - restart jitsi-videobridge
+#     - restart jicofo
+#     - restart prosody
+
+
+- name: Reemplazar marca de agua de jitsi por una personalizado
+  copy:
+    src: images/watermark.png
+    dest: /usr/share/jitsi-meet/images/watermark.png
+    owner: root
+    group: root
+    mode: "0644"
+
+- name: Reemplazar logo de jitsi por uno personalizado
+  copy:
+    src: images/jitsilogo.png
+    dest: /usr/share/jitsi-meet/images/jitsilogo.png
+    owner: root
+    group: root
+    mode: "0644"
+
+- name: Reemplazar favicon de jitsi por uno personalizado
+  copy:
+    src: images/favicon.ico
+    dest: /usr/share/jitsi-meet/images/favicon.ico
+    owner: root
+    group: root
+    mode: "0644"

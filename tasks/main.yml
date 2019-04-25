@@ -23,6 +23,9 @@
 - include: ufw.yml
   when: jitsi_meet_configure_firewall
 
+- include: ui_customization.yml
+  when: jitsi_meet_customize_the_ui
+
   # Placing the browser extensions last so the associated debugging tasks
   # that display URLs are visible near the end of the play.
 - include: browser_extensions.yml
