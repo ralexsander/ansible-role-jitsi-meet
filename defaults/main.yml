@@ -132,3 +132,7 @@ jitsi_meet_default_remote_display_name: 'Fellow Jitster'
 jitsi_meet_default_local_display_name: 'me'
 jitsi_meet_generate_roomnames_on_welcome_page: 'true'
 jitsi_meet_lang_detection: 'false'    # Allow i18n to detect the system language
+
+jitsi_meet_favicon_file: images/favicon.ico
+jitsi_meet_logo_file: images/jitsilogo.png
+jitsi_meet_watermark_file: images/watermark.png

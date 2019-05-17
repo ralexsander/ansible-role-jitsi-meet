@@ -27,8 +27,8 @@
 
 # - name: Set archivo de configuración de idioma de Jitsi Meet
 #   template:
-#     dest: "/usr/share/jitsi-meet/lang/main-es.json"
-#     src: main-es.json.j2
+#     dest: "/usr/share/jitsi-meet/lang/main-{{ jitsi_meet_lang }}.json"
+#     src: main-x.json.j2
 #     owner: root
 #     group: root
 #     mode: "0644"
@@ -41,24 +41,33 @@
 
 - name: Reemplazar marca de agua de jitsi por una personalizado
   copy:
-    src: images/watermark.png
+    src: "{{ jitsi_meet_watermark_file }}"
     dest: /usr/share/jitsi-meet/images/watermark.png
     owner: root
     group: root
     mode: "0644"
+  when: (jitsi_meet_watermark_file is defined) and (jitsi_meet_watermark_file != '')
+  notify:
+    - restart nginx
 
 - name: Reemplazar logo de jitsi por uno personalizado
   copy:
-    src: images/jitsilogo.png
+    src: "{{ jitsi_meet_logo_file }}"
     dest: /usr/share/jitsi-meet/images/jitsilogo.png
     owner: root
     group: root
     mode: "0644"
+  when: (jitsi_meet_logo_file is defined) and (jitsi_meet_logo_file != '')
+  notify:
+    - restart nginx
 
 - name: Reemplazar favicon de jitsi por uno personalizado
   copy:
-    src: images/favicon.ico
+    src: "{{ jitsi_meet_favicon_file }}"
     dest: /usr/share/jitsi-meet/images/favicon.ico
     owner: root
     group: root
     mode: "0644"
+  when: (jitsi_meet_favicon_file is defined) and (jitsi_meet_favicon_file != '')
+  notify:
+    - restart nginx
