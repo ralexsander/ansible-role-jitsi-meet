@@ -1,21 +1,49 @@
 ---
 # handlers file for jitsi-meet
-- name: restart nginx
+- name: stop nginx
+  listen: "restart nginx"
   service:
     name: nginx
-    state: restarted
+    state: stopped
 
-- name: restart prosody
+- name: stop prosody
+  listen: "restart prosody"
+  service:
+    name: prosody
+    state: stopped
+
+- name: stop jicofo
+  listen: "restart jicofo"
+  service:
+    name: jicofo
+    state: stopped
+
+- name: stop jitsi-videobridge
+  listen: "restart jitsi-videobridge"
+  service:
+    name: jitsi-videobridge
+    state: stopped
+
+- name: start nginx service
+  listen: "restart nginx"
+  service:
+    name: nginx
+    state: started
+
+- name: start prosody service
+  listen: "restart prosody"
   service:
     name: prosody
     state: restarted
 
-- name: restart jicofo
+- name: start jicofo service
+  listen: "restart jicofo"
   service:
     name: jicofo
-    state: restarted
+    state: started
 
-- name: restart jitsi-videobridge
+- name: start jitsi-videobridge serevice
+  listen: "restart jitsi-videobridge"
   service:
     name: jitsi-videobridge
-    state: restarted
+    state: started
