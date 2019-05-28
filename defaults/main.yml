@@ -112,3 +112,28 @@ jitsi_meet_configure_firewall: true
 # Role will automatically install nginx and configure a vhost for use with jitsi-meet.
 # If you prefer to manage web vhosts via a separate role, set this to false.
 jitsi_meet_configure_nginx: true
+
+
+
+
+# UI customization
+jitsi_meet_customize_the_ui: false
+
+jitsi_meet_lang: 'en'
+jitsi_meet_appname: 'My app name'
+jitsi_meet_org_link: 'https://link-to-my-organization.com'
+jitsi_meet_welcomepage_title: 'Secure, fully featured, and completely free video conferencing'
+jitsi_meet_welcomepage_description: 'Go ahead, video chat with the whole team. In fact, invite everyone you know. __app__ is a fully encrypted, 100% open source video conferencing solution that you can use all day, every day, for free — with no account needed.'
+jitsi_meet_welcomepage_enterRoom: 'Start a new meeting'
+jitsi_meet_welcomepage_recentListEmpty: 'Your recent list is currently empty. Chat with your team and you will find all your recent meetings here.'
+
+jitsi_meet_default_background: '#474747'
+jitsi_meet_disable_video_background: 'false'
+jitsi_meet_default_remote_display_name: 'Fellow Jitster'
+jitsi_meet_default_local_display_name: 'me'
+jitsi_meet_generate_roomnames_on_welcome_page: 'true'
+jitsi_meet_lang_detection: 'false'    # Allow i18n to detect the system language
+
+jitsi_meet_favicon_file: images/favicon.ico
+jitsi_meet_logo_file: images/jitsilogo.png
+jitsi_meet_watermark_file: images/watermark.png

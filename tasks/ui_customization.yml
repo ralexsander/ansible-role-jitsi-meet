@@ -1,0 +1,60 @@
+---
+- name: Application configuration file
+  template:
+    dest: "/usr/share/jitsi-meet/interface_config.js"
+    src: interface_config.js.j2
+    owner: root
+    group: root
+    mode: "0644"
+  notify:
+    - restart nginx
+    - restart jitsi-videobridge
+    - restart jicofo
+    - restart prosody
+
+- name: Title configuration file
+  template:
+    dest: "/usr/share/jitsi-meet/title.html"
+    src: title.html.j2
+    owner: root
+    group: root
+    mode: "0644"
+
+- name: Customizing the welcome page from language files
+  blockinfile:
+    path: "/usr/share/jitsi-meet/lang/main-{{ jitsi_meet_lang }}.json"
+    insertafter: '"welcomepage": {'
+    block: |
+      "title": "{{ jitsi_meet_welcomepage_title }}",
+      "appDescription": "{{ jitsi_meet_welcomepage_description }}",
+      "enterRoomTitle": "{{ jitsi_meet_welcomepage_enterRoom }}",
+      "recentListEmpty": "{{ jitsi_meet_welcomepage_recentListEmpty }}",
+    marker: '"_comment": "{mark} ANSIBLE MANAGED BLOCK",'
+    backup: yes
+
+- name: Replace watermark for a customized one
+  copy:
+    src: "{{ jitsi_meet_watermark_file }}"
+    dest: /usr/share/jitsi-meet/images/watermark.png
+    owner: root
+    group: root
+    mode: "0644"
+  when: (jitsi_meet_watermark_file is defined) and (jitsi_meet_watermark_file != '')
+
+- name: Replace logo for a customized one
+  copy:
+    src: "{{ jitsi_meet_logo_file }}"
+    dest: /usr/share/jitsi-meet/images/jitsilogo.png
+    owner: root
+    group: root
+    mode: "0644"
+  when: (jitsi_meet_logo_file is defined) and (jitsi_meet_logo_file != '')
+
+- name: Replace favicon for a customized one
+  copy:
+    src: "{{ jitsi_meet_favicon_file }}"
+    dest: /usr/share/jitsi-meet/images/favicon.ico
+    owner: root
+    group: root
+    mode: "0644"
+  when: (jitsi_meet_favicon_file is defined) and (jitsi_meet_favicon_file != '')
