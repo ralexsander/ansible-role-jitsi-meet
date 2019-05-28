@@ -117,7 +117,7 @@ jitsi_meet_configure_nginx: true
 
 
 # UI customization
-jitsi_meet_customize_the_ui: true
+jitsi_meet_customize_the_ui: false
 
 jitsi_meet_lang: 'en'
 jitsi_meet_appname: 'My app name'
