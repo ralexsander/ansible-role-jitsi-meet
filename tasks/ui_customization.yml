@@ -20,7 +20,7 @@
     group: root
     mode: "0644"
 
-- name: Customizing the welcome page from language files
+- name: Customizing the welcome page from language files (Very improvable)
   blockinfile:
     path: "/usr/share/jitsi-meet/lang/main-{{ jitsi_meet_lang }}.json"
     insertafter: '"welcomepage": {'
@@ -31,6 +31,7 @@
       "recentListEmpty": "{{ jitsi_meet_welcomepage_recentListEmpty }}",
     marker: '"_comment": "{mark} ANSIBLE MANAGED BLOCK",'
     backup: yes
+  when: jitsi_meet_lang != 'en'  # There is no language file for 'en'. Is directly used main.json
 
 - name: Replace watermark for a customized one
   copy:
