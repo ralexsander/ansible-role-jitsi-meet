@@ -8,7 +8,7 @@ Requirements
 ------------
 
 You should have DNS pointed at the server already, and SSL keys. If you don't have SSL
-keys for the domain yet, consider using the excellent [thefinn93.letsencrypt] Ansible role
+keys for the domain yet, consider using the [geerlingguy.certbot] Ansible role
 to obtain (free!) SSL certs from [LetsEncrypt].
 
 You will also need to expose ports 443 TCP and 10000 UDP for the Jitsi Meet
@@ -130,6 +130,27 @@ jitsi_meet_configure_firewall: true
 # Role will automatically install nginx and configure a vhost for use with jitsi-meet.
 # If you prefer to manage web vhosts via a separate role, set this to false.
 jitsi_meet_configure_nginx: true
+
+
+# UI customization
+jitsi_meet_customize_the_ui: false
+
+jitsi_meet_lang: 'en'
+jitsi_meet_appname: 'My app name'
+jitsi_meet_org_link: 'https://link-to-my-organization.com'
+jitsi_meet_welcomepage_title: 'Secure, fully featured, and completely free video conferencing'
+jitsi_meet_welcomepage_description: 'Go ahead, video chat with the whole team. In fact, invite everyone you know. __app__ is a fully encrypted, 100% open source video conferencing solution that you can use all day, every day, for free — with no account needed.'
+jitsi_meet_welcomepage_enterRoom: 'Start a new meeting'
+jitsi_meet_welcomepage_recentListEmpty: 'Your recent list is currently empty. Chat with your team and you will find all your recent meetings here.'
+jitsi_meet_default_background: '#474747'
+jitsi_meet_disable_video_background: 'false'
+jitsi_meet_default_remote_display_name: 'Fellow Jitster'
+jitsi_meet_default_local_display_name: 'me'
+jitsi_meet_generate_roomnames_on_welcome_page: 'true'
+jitsi_meet_lang_detection: 'false'    # Allow i18n to detect the system language
+jitsi_meet_favicon_file: images/favicon.ico
+jitsi_meet_logo_file: images/jitsilogo.png
+jitsi_meet_watermark_file: images/watermark.png
 ```
 
 Screen sharing
@@ -150,7 +171,7 @@ via the Jitsi Meet text chat pane.
 Dependencies
 ------------
 
-It's technically not a dependency, but you should check out [thefinn93.letsencrypt]
+It's technically not a dependency, but you should check out [geerlingguy.certbot]
 for astoundingly easy SSL certs.
 
 Example Playbook
@@ -165,12 +186,14 @@ Including an example of how to use your role (for instance, with variables passe
     # Change this to match the DNS entry for your host IP.
     jitsi_meet_server_name: meet.example.com
   roles:
-    - role: thefinn93.letsencrypt
+    - role: geerlingguy.certbot
       become: yes
-      letsencrypt_email: "webmaster@{{ jitsi_meet_server_name }}"
-      letsencrypt_cert_domains:
-        - "{{ jitsi_meet_server_name }}"
-      tags: letsencrypt
+      certbot_create_if_missing: true
+      certbot_admin_email: "webmaster@{{ jitsi_meet_server_name }}"
+      certbot_certs:
+        - domains:
+            - "{{ jitsi_meet_server_name }}"
+      certbot_create_standalone_stop_services: []
 
     - role: ansible-role-jitsi-meet
       jitsi_meet_ssl_cert_path: "/etc/letsencrypt/live/{{ jitsi_meet_server_name }}/fullchain.pem"
@@ -178,6 +201,7 @@ Including an example of how to use your role (for instance, with variables passe
       become: yes
       tags: jitsi
 ```
+
 
 Running the tests
 -----------------
@@ -207,12 +231,14 @@ MIT
 Author Information
 ------------------
 
-[Freedom of the Press Foundation]
+[Freedom of the Press Foundation], [UdelaR Interior], [@santiagomr]
 
 [Jitsi Meet]: https://github.com/jitsi/jitsi-meet
-[thefinn93.letsencrypt]: https://github.com/thefinn93/ansible-letsencrypt
 [LetsEncrypt]: https://letsencrypt.org/
+[geerlingguy.certbot]: https://galaxy.ansible.com/geerlingguy/certbot
 [Freedom of the Press Foundation]: https://freedom.press/
+[UdelaR Interior]: https://github.com/UdelaRInterior
+[@santiagomr]: https://github.com/santiagomr
 [Molecule]: http://molecule.readthedocs.org/en/master/
 [ServerSpec]: http://serverspec.org/
 [Jidesha]: https://github.com/jitsi/jidesha
