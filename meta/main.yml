@@ -3,14 +3,18 @@ galaxy_info:
   author:
     - Kevin Gallagher (@ageis)
     - Conor Schaefer (@conorsch)
+    - Santiago Martínez (@santiagomr)
   description: Installs Jitsi Meet videoconferencing software
-  company: Freedom of the Press Foundation (@freedomofpress)
+  company:
+    - Freedom of the Press Foundation (@freedomofpress)
+    - Red Unidades Informáticas UdelaR en el Interior (@UdelaRInterior)
   license: MIT
-  min_ansible_version: 1.9.4
+  min_ansible_version: 2.7
   platforms:
     - name: Debian
       versions:
-      - jessie
+        - jessie
+        - stretch
   categories:
     - system
 dependencies: []
