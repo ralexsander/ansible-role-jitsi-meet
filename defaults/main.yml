@@ -115,7 +115,6 @@ jitsi_meet_configure_nginx: true
 
 
 
-
 # UI customization
 jitsi_meet_customize_the_ui: false
 
