@@ -30,10 +30,12 @@
     - restart prosody
 
 - name: Generate SSL keypair for Prosody service.
-  shell: >
+  shell: |
+    set -o pipefail
     yes '' | prosodyctl cert generate {{ jitsi_meet_server_name }}
   args:
     creates: /var/lib/prosody/{{ jitsi_meet_server_name }}.crt
+    executable: /bin/bash
   notify:
     - restart jicofo
     - restart prosody
