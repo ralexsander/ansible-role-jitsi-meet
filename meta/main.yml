@@ -1,5 +1,6 @@
 ---
 galaxy_info:
+  role_name: jitsi_meet
   author:
     - '@ageis'
     - '@conorsch'
