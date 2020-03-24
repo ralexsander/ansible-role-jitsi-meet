@@ -104,6 +104,19 @@ jitsi_meet_debconf_settings:
     question: jitsi-videobridge/jvb-hostname
     value: "{{ jitsi_meet_server_name }}"
     vtype: string
+###
+  - name: jitsi-meet-web-config
+    question: jitsi-meet/cert-choice
+    value: "I want to use my own certificate"
+    vtype: select
+  - name: jitsi-meet-web-config
+    question: jitsi-meet/cert-path-key
+    value: "{{ jitsi_meet_ssl_key_path }}"
+    vtype: string
+  - name: jitsi-meet-web-config
+    question: jitsi-meet/cert-path-crt
+    value: "{{ jitsi_meet_ssl_cert_path }}"
+    vtype: string
 
 # Role will automatically install configure ufw with jitsi-meet port holes.
 # If you're managing a firewall elsewise, set this to false, and ufw will be skipped.

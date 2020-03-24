@@ -9,8 +9,21 @@
 - name: Install Nginx if it was indicated.
   apt:
     name: nginx
-    state: latest
+    state: present
+  register: nginx_installation
   when: jitsi_meet_configure_nginx
+
+- block:
+  - name: "Fix: nginx listening IPv4 and IPv6"
+    template:
+      dest: /etc/nginx/sites-available/default
+      src: default_nginx.conf.j2
+  - service:
+      name: nginx
+      state: restarted
+  when:
+    - jitsi_meet_configure_nginx | bool
+    - nginx_installation.changed | bool
 
 # Prior versions of the role were writing to this file, let's
 # clean it up and use a generalized filename for configuring the apt repo,
@@ -50,6 +63,5 @@
 - name: Install Jitsi Meet
   apt:
     name: jitsi-meet
-    state: latest
+    state: present
     update_cache: yes
-    cache_valid_time: 3600
