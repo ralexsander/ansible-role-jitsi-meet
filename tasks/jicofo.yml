@@ -1,4 +1,5 @@
 ---
+
 - name: Copy Jicofo config file.
   template:
     dest: /etc/jitsi/jicofo/config
@@ -7,15 +8,6 @@
     group: root
     mode: "0644"
   notify: restart jicofo
-
-- name: Copy Jitsi Videobridge config file.
-  template:
-    dest: /etc/jitsi/videobridge/config
-    src: videobridge_config.j2
-    owner: root
-    group: root
-    mode: "0644"
-  notify: restart jitsi-videobridge
 
 - name: Set Jicofo log level.
   lineinfile:

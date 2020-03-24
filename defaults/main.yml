@@ -1,33 +1,70 @@
 ---
-# It allows you to specify the installation of jitsi meet creating and configuring
-# self-signed HTTPS certificates, which can then be replaced by Let's Encrypt certificates
-jitsi_meet_cert_choice: "Generate a new self-signed certificate (You will later get a chance to obtain a Let's encrypt certificate)"
 
+########################################
+###### most important variables ########
+# and that you must adapt to your case #
+########################################
 
 # Without SSL, "localhost" is the correct default. If SSL info is provided,
 # then we'll need a real domain name. Using Ansible's inferred FQDN, but you
 # can set the variable value explicitly if you use a shorter hostname
 # If automatic Nginx configuration is disabled, also use FQDN, since presumably
 # another role will manage the vhost config.
-jitsi_meet_server_name: "{{ inventory_hostname if (jitsi_meet_configure_nginx) else ansible_fqdn if (not jitsi_meet_configure_nginx) else 'localhost' }}"
+jitsi_meet_server_name: "{{ ansible_fqdn | default('localhost') }}"
 
+# Note from official documentation:
+# The installer will check if Nginx or Apache is present (in that order) and configure
+# a virtualhost within the web server it finds to serve Jitsi Meet. If none of the above
+# is found it then defaults to Nginx. If you are already running Nginx on port 443 on
+# the same machine you better skip the turnserver configuration as it will conflict with
+# your current port 443, so use the command apt install --no-install-recommends jitsi-meet
+jitsi_meet_install_recommends: no
 
-# The default cert files are /var/lib/prosody/localhost.{crt,key}
+# If (jitsi_meet_install_recommends == no), there won't be turnserver installed and available
+jitsi_meet_use_stun_turn: 'false'
+
+# Configure nginx and jitsi-meet to listening also IPv6
+jitsi_meet_ipv6_enable: true
+
+# It allows you to specify the installation of jitsi meet creating and configuring
+# self-signed HTTPS certificates, which can then be replaced by Let's Encrypt certificates
+jitsi_meet_cert_choice: "Generate a new self-signed certificate (You will later get a chance to obtain a Let's encrypt certificate)"
+# Due to the behavior of the Jitsi installer scripts, it is recommended to keep this value, even if you
+# plan to use your own generated certificates (for example). with certbot. You can do it from this role
+
 # NOT setting them here, because empty strings for custom certs will
 # cause the custom Nginx config tasks to be skipped.
 jitsi_meet_ssl_cert_path: ''
 jitsi_meet_ssl_key_path: ''
 
+#############
+### NGINX ###
+# This role will automatically configure a nginx vhost for use with jitsi-meet.
+# If you prefer to manage web vhosts via a separate role, set this to false.
+jitsi_meet_configure_nginx: true
+
+
+
+###########################################
+# other useful variables to customize the #
+# installation, but less frequently used  #
+###########################################
+
+# The Debian package installation of jitsi-meet will generate secrets for the components.
+# The role will read the config file and preserve the secrets even while templating.
+# If you wish to generate your own secrets and use those, override these vars, but make
+# sure to store the secrets securely, e.g. with ansible-vault or credstash.
+jitsi_meet_videobridge_secret: ''
+jitsi_meet_jicofo_secret: ''
+jitsi_meet_jicofo_password: ''
+
+##################
+### APT things ###
 # List of packages that need to be installed before jitsi meet
 jitsi_meet_base_packages:
   - apt-transport-https
-  - default-jre-headless
   - debconf
   - debconf-utils
-
-
-# Only "anonymous" auth is supported, which lets anyone use the videoconference server.
-jitsi_meet_authentication: anonymous
 
 # Whether to use nightly builds of the Jitsi Meet components.
 jitsi_meet_use_nightly_apt_repo: false
@@ -38,32 +75,67 @@ jitsi_meet_apt_repos:
   unstable:
     repo_url: 'deb https://download.jitsi.org unstable/'
 
-
 jitsi_meet_apt_key_url: 'https://download.jitsi.org/jitsi-key.gpg.key'
 jitsi_meet_apt_key_id: '66A9CD0595D6AFA247290D3BEF8B479E2DC1389C'
 
-# The Debian package installation of jitsi-meet will generate secrets for the components.
-# The role will read the config file and preserve the secrets even while templating.
-# If you wish to generate your own secrets and use those, override these vars, but make
-# sure to store the secrets securely, e.g. with ansible-vault or credstash.
-jitsi_meet_videobridge_secret: ''
-jitsi_meet_jicofo_secret: ''
-jitsi_meet_jicofo_password: ''
+# These debconf settings represent answers to interactive prompts during installation
+# of the jitsi-meet deb package. If you use custom SSL certs, you may have to set more options.
+jitsi_meet_debconf_settings:
+  - name: jitsi-meet
+    question: jitsi-meet/jvb-serve
+    value: "false"
+    vtype: boolean
+  - name: jitsi-meet-prosody
+    question: jitsi-meet-prosody/jvb-hostname
+    value: "{{ jitsi_meet_server_name }}"
+    vtype: string
+  - name: jitsi-videobridge
+    question: jitsi-videobridge/jvb-hostname
+    value: "{{ jitsi_meet_server_name }}"
+    vtype: string
+  - name: jitsi-meet-web-config
+    question: jitsi-meet/cert-choice
+    value: "{{ jitsi_meet_cert_choice }}"
+    vtype: select
+  - name: jitsi-meet-web-config
+    question: jitsi-meet/cert-path-key
+    value: "{{ jitsi_meet_ssl_key_path }}"
+    vtype: string
+  - name: jitsi-meet-web-config
+    question: jitsi-meet/cert-path-crt
+    value: "{{ jitsi_meet_ssl_cert_path }}"
+    vtype: string
 
+
+#######################
+### Server firewall ###
+# This role will automatically install configure ufw with jitsi-meet port holes.
+# If you're managing a firewall elsewise, set this to false, and ufw will be skipped.
+jitsi_meet_configure_firewall: true
+
+##############
+### Jicofo ###
 # Default auth information, used in multiple service templates.
 jitsi_meet_jicofo_user: focus
 jitsi_meet_jicofo_port: 5347
-
 # The Jitsi components use the standard Java log levels, see:
 # https://docs.oracle.com/javase/7/docs/api/java/util/logging/Level.html
 # When using log aggregation for jitsi-meet components, set to "WARNING".
 jitsi_meet_jicofo_loglevel: INFO
+
+###################
+### Videobridge ###
 # The default config file at /etc/jitsi/videobridge/config claims the default port
 # for JVB is "5275", but the manual install guide references "5347".
 # https://github.com/jitsi/jitsi-meet/blob/master/doc/manual-install.md
 jitsi_meet_videobridge_port: 5347
-
 jitsi_meet_videobridge_loglevel: INFO
+
+############
+### Meet ###
+# Only "anonymous" auth is supported, which lets anyone use the videoconference server.
+jitsi_meet_authentication: anonymous
+
 # A recent privacy-friendly addition, see here for details:
 # https://github.com/jitsi/jitsi-meet/issues/422
 # https://github.com/jitsi/jitsi-meet/pull/427
@@ -85,37 +157,17 @@ jitsi_meet_desktop_sharing_firefox_ext_id: 'null'
 jitsi_meet_desktop_sharing_firefox_disabled: 'false'
 jitsi_meet_desktop_sharing_firefox_max_version_ext_required: '-1'
 
-# These debconf settings represent answers to interactive prompts during installation
-# of the jitsi-meet deb package. If you use custom SSL certs, you may have to set more options.
-jitsi_meet_debconf_settings:
-  - name: jitsi-meet
-    question: jitsi-meet/cert-choice
-    value: "{{ jitsi_meet_cert_choice }}"
-    vtype: string
-  - name: jitsi-meet
-    question: jitsi-meet/jvb-serve
-    value: "true"
-    vtype: boolean
-  - name: jitsi-meet-prosody
-    question: jitsi-meet-prosody/jvb-hostname
-    value: "{{ jitsi_meet_server_name }}"
-    vtype: string
-  - name: jitsi-videobridge
-    question: jitsi-videobridge/jvb-hostname
-    value: "{{ jitsi_meet_server_name }}"
-    vtype: string
+###################
+### SIP gateway ###
+jitsi_meet_configure_sip_gateway: false
+jitsi_meet_jigasi_account: sipnumber@sip-provider.name
+jitsi_meet_jigasi_password: fdi49fndKjhe3
 
-# Role will automatically install configure ufw with jitsi-meet port holes.
-# If you're managing a firewall elsewise, set this to false, and ufw will be skipped.
-jitsi_meet_configure_firewall: true
+jitsi_meet_jigasi_jicofo_sip_template: jicofo_sip-communicator.properties.j2
+jitsi_meet_jigasi_videobridge_sip_template: videobridge_sip-communicator.properties.j2
 
-# Role will automatically install nginx and configure a vhost for use with jitsi-meet.
-# If you prefer to manage web vhosts via a separate role, set this to false.
-jitsi_meet_configure_nginx: true
-
-
-
-# UI customization
+########################
+### UI customization ###
 jitsi_meet_customize_the_ui: false
 
 jitsi_meet_lang: 'en'
@@ -123,8 +175,16 @@ jitsi_meet_appname: 'My app name'
 jitsi_meet_org_link: 'https://link-to-my-organization.com'
 jitsi_meet_welcomepage_title: 'Secure, fully featured, and completely free video conferencing'
 jitsi_meet_welcomepage_description: 'Go ahead, video chat with the whole team. In fact, invite everyone you know. __app__ is a fully encrypted, 100% open source video conferencing solution that you can use all day, every day, for free — with no account needed.'
-jitsi_meet_welcomepage_enterRoom: 'Start a new meeting'
-jitsi_meet_welcomepage_recentListEmpty: 'Your recent list is currently empty. Chat with your team and you will find all your recent meetings here.'
+
+# By default it is an empty string because the CSS file is a bundled file for
+# the entire site, and it change very frequently with each release. It will be
+# replaced only if you have a custom CSS file and indicate its path in this variable
+jitsi_meet_css_file: ''
+jitsi_meet_welcome_page_additions_file: welcomePageAdditionalContent.html.j2
+
+jitsi_meet_favicon_file: images/favicon.ico
+jitsi_meet_logo_file: images/jitsilogo.png
+jitsi_meet_watermark_file: images/watermark.png
 
 jitsi_meet_default_background: '#474747'
 jitsi_meet_disable_video_background: 'false'
@@ -132,7 +192,3 @@ jitsi_meet_default_remote_display_name: 'Fellow Jitster'
 jitsi_meet_default_local_display_name: 'me'
 jitsi_meet_generate_roomnames_on_welcome_page: 'true'
 jitsi_meet_lang_detection: 'false'    # Allow i18n to detect the system language
-
-jitsi_meet_favicon_file: images/favicon.ico
-jitsi_meet_logo_file: images/jitsilogo.png
-jitsi_meet_watermark_file: images/watermark.png
