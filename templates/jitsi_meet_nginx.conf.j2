@@ -2,13 +2,13 @@ server_names_hash_bucket_size 64;
 
 server {
     listen 80;
-    #listen [::]:80 ipv6only=off;
+    listen [::]:80;
     server_name {{ jitsi_meet_server_name }};
     return 301 https://$host$request_uri;
 }
 server {
     listen 443 ssl;
-    #listen [::]:443 ssl ipv6only=off;
+    listen [::]:443 ssl;
     server_name {{ jitsi_meet_server_name }};
 
     ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
