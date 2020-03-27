@@ -1,49 +1,78 @@
 ---
 # handlers file for jitsi-meet
-- name: stop nginx
-  listen: "restart nginx"
-  service:
-    name: nginx
-    state: stopped
+# - name: stop nginx
+#   listen: "restart nginx"
+#   service:
+#     name: nginx
+#     state: stopped
 
-- name: stop prosody
-  listen: "restart prosody"
-  service:
-    name: prosody
-    state: stopped
+# - name: stop prosody
+#   listen: "restart prosody"
+#   service:
+#     name: prosody
+#     state: stopped
 
-- name: stop jicofo
-  listen: "restart jicofo"
-  service:
-    name: jicofo
-    state: stopped
+# - name: stop jicofo
+#   listen: "restart jicofo"
+#   service:
+#     name: jicofo
+#     state: stopped
 
-- name: stop jitsi-videobridge
-  listen: "restart jitsi-videobridge"
+# - name: stop jitsi-videobridge
+#   listen: "restart jitsi-videobridge"
+#   service:
+#     name: jitsi-videobridge
+#     state: stopped
+
+# - name: start nginx service
+#   listen: "restart nginx"
+#   service:
+#     name: nginx
+#     state: started
+
+# - name: start prosody service
+#   listen: "restart prosody"
+#   service:
+#     name: prosody
+#     state: restarted
+
+# - name: start jicofo service
+#   listen: "restart jicofo"
+#   service:
+#     name: jicofo
+#     state: started
+
+# - name: start jitsi-videobridge serevice
+#   listen: "restart jitsi-videobridge"
+#   service:
+#     name: jitsi-videobridge
+#     state: started
+
+
+
+- name: restart jitsi-videobridge
   service:
     name: jitsi-videobridge
-    state: stopped
+    state: restarted
+  # Restart the service only if either there is no conference running or the status page is not enables (normally during the setup phase)
+  # when: videobridge_only and (( conferences.json is defined and conferences.json['conferences'] == 0 ) or ( colibristats.status is defined and colibristats.status != 200 ))
 
-- name: start nginx service
-  listen: "restart nginx"
+- name: restart jicofo
   service:
-    name: nginx
-    state: started
+    name: jicofo
+    state: restarted
 
-- name: start prosody service
-  listen: "restart prosody"
+- name: restart prosody
   service:
     name: prosody
     state: restarted
 
-- name: start jicofo service
-  listen: "restart jicofo"
-  service:
-    name: jicofo
-    state: started
+- name: reload systemctl
+  systemd:
+    daemon_reload: yes
 
-- name: start jitsi-videobridge serevice
-  listen: "restart jitsi-videobridge"
+
+- name: restart nginx
   service:
-    name: jitsi-videobridge
-    state: started
+    name: nginx
+    state: restarted

@@ -14,11 +14,12 @@
   when: jitsi_meet_configure_nginx
 
 - block:
-  - name: "Fix: nginx listening IPv4 and IPv6"
+  - name: "Fix: nginx also listening HTTPS"
     template:
       dest: /etc/nginx/sites-available/default
       src: default_nginx.conf.j2
-  - service:
+  - name: restart nginx
+    service:
       name: nginx
       state: restarted
   when:
@@ -64,5 +65,10 @@
 - name: Install Jitsi Meet
   apt:
     name: jitsi-meet
+#     name:
+#       - jicofo
+#       - jitsi-meet-web
+#       - jitsi-meet-prosody
+#       - jitsi-meet-web-config
+#       - jitsi-videobridge
     state: present
-    
