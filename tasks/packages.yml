@@ -50,7 +50,6 @@
     state: "{{ 'present' if jitsi_strategy == item.key else 'absent' }}"
     # Ansible will automatically add the ".list" suffix.
     filename: /etc/apt/sources.list.d/jitsi_meet
-    update_cache: yes
   with_dict: "{{ jitsi_meet_apt_repos }}"
 
 - name: Set debconf options for jitsi-meet.
@@ -65,4 +64,4 @@
   apt:
     name: jitsi-meet
     state: present
-    
+    update_cache: yes
