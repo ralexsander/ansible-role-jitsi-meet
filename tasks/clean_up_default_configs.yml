@@ -1,4 +1,5 @@
 ---
+
 - name: Remove default localhost Jitsi Meet config file.
   file:
     path: /etc/jitsi/meet/localhost-config.js

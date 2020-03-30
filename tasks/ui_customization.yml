@@ -1,4 +1,5 @@
 ---
+
 - name: Application configuration file
   template:
     dest: "/usr/share/jitsi-meet/interface_config.js"
@@ -7,10 +8,10 @@
     group: root
     mode: "0644"
   notify:
-    - restart nginx
     - restart jitsi-videobridge
     - restart jicofo
     - restart prosody
+    - restart nginx
 
 - name: Title configuration file
   template:
@@ -20,18 +21,21 @@
     group: root
     mode: "0644"
 
-- name: Customizing the welcome page from language files (Very improvable)
-  blockinfile:
-    path: "/usr/share/jitsi-meet/lang/main-{{ jitsi_meet_lang }}.json"
-    insertafter: '"welcomepage": {'
-    block: |
-      "title": "{{ jitsi_meet_welcomepage_title }}",
-      "appDescription": "{{ jitsi_meet_welcomepage_description }}",
-      "enterRoomTitle": "{{ jitsi_meet_welcomepage_enterRoom }}",
-      "recentListEmpty": "{{ jitsi_meet_welcomepage_recentListEmpty }}",
-    marker: '"_comment": "{mark} ANSIBLE MANAGED BLOCK",'
-    backup: yes
-  when: jitsi_meet_lang != 'en'  # There is no language file for 'en'. Is directly used main.json
+- name: Welcome Page Additions
+  template:
+    src: "{{ jitsi_meet_welcome_page_additions_file }}"
+    dest: /usr/share/jitsi-meet/static/welcomePageAdditionalContent.html
+    owner: root
+    group: root
+    mode: "0644"
+
+- name: Site CSS
+  template:
+    src: "{{ jitsi_meet_css_file }}"
+    dest: /usr/share/jitsi-meet/css/all.css
+    owner: root
+    group: root
+    mode: "0644"
 
 - name: Replace watermark for a customized one
   copy:

@@ -1,6 +1,8 @@
 jitsi-meet
 =========
 
+[![Galaxy](https://img.shields.io/badge/galaxy-UdelaRInterior.jitsi_meet-blue.svg)](https://galaxy.ansible.com/udelarinterior/jitsi_meet)
+
 Installs and configures the [Jitsi Meet] videoconferencing software.
 
 
@@ -21,16 +23,19 @@ Role Variables
 --------------
 
 ```yaml
-# It allows you to specify the installation of jitsi meet creating and configuring
-# self-signed HTTPS certificates, which can then be replaced by Let's Encrypt certificates
-jitsi_meet_cert_choice: "Generate a new self-signed certificate (You will later get a chance to obtain a Let's encrypt certificate)"
-
 # Without SSL, "localhost" is the correct default. If SSL info is provided,
 # then we'll need a real domain name. Using Ansible's inferred FQDN, but you
 # can set the variable value explicitly if you use a shorter hostname
 # If automatic Nginx configuration is disabled, also use FQDN, since presumably
 # another role will manage the vhost config.
-jitsi_meet_server_name: "{{ inventory_hostname if (jitsi_meet_configure_nginx) else ansible_fqdn if (not jitsi_meet_configure_nginx) else 'localhost' }}"
+jitsi_meet_server_name: "{{ ansible_fqdn | default('localhost') }}"
+
+# Configure nginx and jitsi-meet to listening also IPv6
+jitsi_meet_ipv6_enable: true
+
+# It allows you to specify the installation of jitsi meet creating and configuring
+# self-signed HTTPS certificates, which can then be replaced by Let's Encrypt certificates
+jitsi_meet_cert_choice: "Generate a new self-signed certificate (You will later get a chance to obtain a Let's encrypt certificate)"
 
 # The default cert files are /var/lib/prosody/localhost.{crt,key}
 # NOT setting them here, because empty strings for custom certs will
@@ -41,7 +46,6 @@ jitsi_meet_ssl_key_path: ''
 # List of packages that need to be installed before jitsi meet
 jitsi_meet_base_packages:
   - apt-transport-https
-  - default-jre-headless
   - debconf
   - debconf-utils
 
@@ -65,6 +69,7 @@ jitsi_meet_apt_key_id: '66A9CD0595D6AFA247290D3BEF8B479E2DC1389C'
 # If you wish to generate your own secrets and use those, override these vars, but make
 # sure to store the secrets securely, e.g. with ansible-vault or credstash.
 jitsi_meet_videobridge_secret: ''
+jitsi_meet_videobridge_password: 'zMyJJHRg7M4V2yPDd7J3n' # Change me and put me in a vault!
 jitsi_meet_jicofo_secret: ''
 jitsi_meet_jicofo_password: ''
 
@@ -107,12 +112,8 @@ jitsi_meet_desktop_sharing_firefox_max_version_ext_required: '-1'
 # of the jitsi-meet deb package. If you use custom SSL certs, you may have to set more options.
 jitsi_meet_debconf_settings:
   - name: jitsi-meet
-    question: jitsi-meet/cert-choice
-    value: "{{ jitsi_meet_cert_choice }}"
-    vtype: string
-  - name: jitsi-meet
     question: jitsi-meet/jvb-serve
-    value: "true"
+    value: "false"
     vtype: boolean
   - name: jitsi-meet-prosody
     question: jitsi-meet-prosody/jvb-hostname
@@ -121,6 +122,18 @@ jitsi_meet_debconf_settings:
   - name: jitsi-videobridge
     question: jitsi-videobridge/jvb-hostname
     value: "{{ jitsi_meet_server_name }}"
+    vtype: string
+  - name: jitsi-meet-web-config
+    question: jitsi-meet/cert-choice
+    value: "{{ jitsi_meet_cert_choice }}"
+    vtype: select
+  - name: jitsi-meet-web-config
+    question: jitsi-meet/cert-path-key
+    value: "{{ jitsi_meet_ssl_key_path }}"
+    vtype: string
+  - name: jitsi-meet-web-config
+    question: jitsi-meet/cert-path-crt
+    value: "{{ jitsi_meet_ssl_cert_path }}"
     vtype: string
 
 # Role will automatically install configure ufw with jitsi-meet port holes.
@@ -131,8 +144,7 @@ jitsi_meet_configure_firewall: true
 # If you prefer to manage web vhosts via a separate role, set this to false.
 jitsi_meet_configure_nginx: true
 
-
-# UI customization
+### UI customization ###
 jitsi_meet_customize_the_ui: false
 
 jitsi_meet_lang: 'en'
@@ -140,17 +152,24 @@ jitsi_meet_appname: 'My app name'
 jitsi_meet_org_link: 'https://link-to-my-organization.com'
 jitsi_meet_welcomepage_title: 'Secure, fully featured, and completely free video conferencing'
 jitsi_meet_welcomepage_description: 'Go ahead, video chat with the whole team. In fact, invite everyone you know. __app__ is a fully encrypted, 100% open source video conferencing solution that you can use all day, every day, for free — with no account needed.'
-jitsi_meet_welcomepage_enterRoom: 'Start a new meeting'
-jitsi_meet_welcomepage_recentListEmpty: 'Your recent list is currently empty. Chat with your team and you will find all your recent meetings here.'
+jitsi_meet_welcome_page_additions_file: welcomePageAdditionalContent.html.j2
+jitsi_meet_css_file: all.css.j2
+jitsi_meet_favicon_file: images/favicon.ico
+jitsi_meet_logo_file: images/jitsilogo.png
+jitsi_meet_watermark_file: images/watermark.png
 jitsi_meet_default_background: '#474747'
 jitsi_meet_disable_video_background: 'false'
 jitsi_meet_default_remote_display_name: 'Fellow Jitster'
 jitsi_meet_default_local_display_name: 'me'
 jitsi_meet_generate_roomnames_on_welcome_page: 'true'
 jitsi_meet_lang_detection: 'false'    # Allow i18n to detect the system language
-jitsi_meet_favicon_file: images/favicon.ico
-jitsi_meet_logo_file: images/jitsilogo.png
-jitsi_meet_watermark_file: images/watermark.png
+
+### Jibri integration ###
+jibri_enable: false
+jibri_recording: false
+jibri_streaming: false
+jibri_user_jibri_password: "jibriauthpass"
+jibri_user_recorder_password: "jibrirecorderpass"
 ```
 
 Screen sharing
@@ -195,7 +214,7 @@ Including an example of how to use your role (for instance, with variables passe
             - "{{ jitsi_meet_server_name }}"
       certbot_create_standalone_stop_services: []
 
-    - role: ansible-role-jitsi-meet
+    - role: udelarinterior.jitsi_meet
       jitsi_meet_ssl_cert_path: "/etc/letsencrypt/live/{{ jitsi_meet_server_name }}/fullchain.pem"
       jitsi_meet_ssl_key_path: "/etc/letsencrypt/live/{{ jitsi_meet_server_name }}/privkey.pem"
       become: yes
@@ -233,6 +252,8 @@ Author Information
 
 [Freedom of the Press Foundation], [UdelaR Interior], [@santiagomr]
 
+Updates made in March 2020, inspired by [SWITCH](https://www.switch.ch/) [role](https://github.com/switch-ch/jitsi-deploy/tree/master/ansible/roles/jitsi) released as part of a [larger project](https://github.com/switch-ch/jitsi-deploy)
+
 [Jitsi Meet]: https://github.com/jitsi/jitsi-meet
 [LetsEncrypt]: https://letsencrypt.org/
 [geerlingguy.certbot]: https://galaxy.ansible.com/geerlingguy/certbot
@@ -242,3 +263,4 @@ Author Information
 [Molecule]: http://molecule.readthedocs.org/en/master/
 [ServerSpec]: http://serverspec.org/
 [Jidesha]: https://github.com/jitsi/jidesha
+

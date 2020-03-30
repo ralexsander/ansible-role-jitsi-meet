@@ -1,4 +1,5 @@
 ---
+
 - name: Read Jitsi Videobridge secret var.
   command: >
     perl -lane '/^JVB_SECRET=(.*)$/ && print $1'

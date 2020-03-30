@@ -1,0 +1,16 @@
+---
+
+- name: jicofo sip-communicator properties
+  become: yes
+  template:
+    src: jicofo_sip-communicator.properties.j2
+    dest: /etc/jitsi/jicofo/sip-communicator.properties
+    mode: 0644
+  notify: restart jicofo
+
+- name: Add videobridge sip-communicator config
+  template:
+    src: sip-communicator.properties.j2
+    dest: /etc/jitsi/videobridge/sip-communicator.properties
+    mode: 0644
+  notify: restart jitsi-videobridge

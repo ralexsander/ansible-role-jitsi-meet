@@ -11,7 +11,7 @@ server {
 server {
     listen 443 ssl;
 {% if(jitsi_meet_ipv6_enable) %}
-    listen [::]:443;
+    listen [::]:443 ssl;
 {% endif %}
     server_name {{ jitsi_meet_server_name }};
 
@@ -19,7 +19,7 @@ server {
     ssl_prefer_server_ciphers on;
     ssl_ciphers "EECDH+ECDSA+AESGCM:EECDH+aRSA+AESGCM:EECDH+ECDSA+SHA256:EECDH+aRSA+SHA256:EECDH+ECDSA+SHA384:EECDH+ECDSA+SHA256:EECDH+aRSA+SHA384:EDH+aRSA+AESGCM:EDH+aRSA+SHA256:EDH+aRSA:EECDH:!aNULL:!eNULL:!MEDIUM:!LOW:!3DES:!MD5:!EXP:!PSK:!SRP:!DSS:!RC4:!SEED";
 
-    {% if (jitsi_meet_ssl_cert_path == '' and jitsi_meet_ssl_key_path == '') %}#{% endif %} add_header Strict-Transport-Security "max-age=31536000";
+    {% if (jitsi_meet_ssl_cert_path == '' and jitsi_meet_ssl_key_path == '') %}# {% endif %}add_header Strict-Transport-Security "max-age=31536000";
 
     ssl_certificate {{ jitsi_meet_ssl_cert_path }};
     ssl_certificate_key {{ jitsi_meet_ssl_key_path }};
@@ -31,7 +31,7 @@ server {
     index index.html index.htm;
     error_page 404 /static/404.html;
 
-    location /config.js {
+    location = /config.js {
         alias /etc/jitsi/meet/{{ jitsi_meet_server_name }}-config.js;
     }
 
@@ -47,7 +47,7 @@ server {
     }
 
     # BOSH
-    location /http-bind {
+    location = /http-bind {
         proxy_pass      http://localhost:5280/http-bind;
         proxy_set_header X-Forwarded-For $remote_addr;
         proxy_set_header Host $http_host;

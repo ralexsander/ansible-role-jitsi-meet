@@ -1,4 +1,5 @@
 ---
+
 - name: Copy Chrome web browser extension.
   copy:
     src: "{{ jitsi_meet_desktop_sharing_chrome_extension_filename }}"

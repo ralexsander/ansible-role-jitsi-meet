@@ -1,4 +1,5 @@
 ---
+
 - name: Copy Jicofo config file.
   template:
     dest: /etc/jitsi/jicofo/config
@@ -15,11 +16,3 @@
     line: ".level={{ jitsi_meet_jicofo_loglevel }}"
     state: present
   notify: restart jicofo
-
-# - name: jicofo sip-communicator properties
-#   become: yes
-#   template:
-#     src: jicofo_sip-communicator.properties.j2
-#     dest: /etc/jitsi/jicofo/sip-communicator.properties
-#     mode: 0644
-#   notify: restart jicofo

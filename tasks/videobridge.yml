@@ -1,13 +1,5 @@
 ---
 
-# - name: Add videobridge sip-communicator config
-#   template:
-#     src: sip-communicator.properties.j2
-#     dest: /etc/jitsi/videobridge/sip-communicator.properties
-#     mode: 0644
-#   notify: restart jitsi-videobridge
-
-################# ya estaba: ->
 - name: Copy Jitsi Videobridge config file.
   template:
     src: videobridge_config.j2
@@ -24,6 +16,3 @@
     line: ".level={{ jitsi_meet_videobridge_loglevel }}"
     state: present
   notify: restart jitsi-videobridge
-
-############ <-
-
