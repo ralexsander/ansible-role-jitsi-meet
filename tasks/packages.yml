@@ -7,28 +7,28 @@
     update_cache: yes
     cache_valid_time: 3600
 
-- name: Install Nginx if it was indicated.
-  apt:
-    name: nginx
-    state: present
-  register: nginx_installation
-  when: jitsi_meet_configure_nginx
+# - name: Install Nginx if it was indicated.
+#   apt:
+#     name: nginx
+#     state: present
+#   register: nginx_installation
+#   when: jitsi_meet_configure_nginx
 
-- block:
-    # The default nginx site only listens to HTTP,
-    # if the installation continues without doing the fix,
-    # jitsi-videobridge will take care of HTTPS, generating many inconsistencies
-  - name: "Temporary fix so nginx will also listen HTTPS"
-    template:
-      dest: /etc/nginx/sites-available/default
-      src: default_nginx.conf.j2
-  - name: restart nginx
-    service:
-      name: nginx
-      state: restarted
-  when:
-    - jitsi_meet_configure_nginx | bool
-    - nginx_installation.changed | bool
+# - block:
+#     # The default nginx site only listens to HTTP,
+#     # if the installation continues without doing the fix,
+#     # jitsi-videobridge will take care of HTTPS, generating many inconsistencies
+#   - name: "Temporary fix so nginx will also listen HTTPS"
+#     template:
+#       dest: /etc/nginx/sites-available/default
+#       src: default_nginx.conf.j2
+#   - name: restart nginx
+#     service:
+#       name: nginx
+#       state: restarted
+#   when:
+#     - jitsi_meet_configure_nginx | bool
+#     - nginx_installation.changed | bool
 
 # Prior versions of the role were writing to this file, let's
 # clean it up and use a generalized filename for configuring the apt repo,
@@ -70,4 +70,4 @@
   apt:
     name: jitsi-meet
     state: present
-    install_recommends: no
+    # install_recommends: no

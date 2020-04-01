@@ -43,6 +43,7 @@ VirtualHost "{{ jitsi_meet_server_name }}"
         c2s_require_encryption = false
 
 Component "conference.{{ jitsi_meet_server_name }}" "muc"
+    storage = "none"
     modules_enabled = {
         "muc_meeting_id";
         "muc_domain_mapper";
@@ -52,6 +53,7 @@ Component "conference.{{ jitsi_meet_server_name }}" "muc"
 
 -- internal muc component
 Component "internal.auth.{{ jitsi_meet_server_name }}" "muc"
+    storage = "none"
     modules_enabled = {
       "ping";
     }
