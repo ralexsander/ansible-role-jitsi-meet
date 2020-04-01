@@ -3,13 +3,13 @@ plugin_paths = { "/usr/share/jitsi-meet/prosody-plugins/" }
 -- domain mapper options, must at least have domain base set to use the mapper
 muc_mapper_domain_base = "{{ jitsi_meet_server_name }}";
 
--- turncredentials_secret = "{{ prosody_turncredentials_secret | default('') }}";
+turncredentials_secret = "{{ prosody_turncredentials_secret | default('') }}";
 
--- turncredentials = {
-  -- { type = "stun", host = "{{ jitsi_meet_server_name }}", port = "443" },
-  -- { type = "turn", host = "{{ jitsi_meet_server_name }}", port = "443", transport = "udp" },
-  -- { type = "turns", host = "{{ jitsi_meet_server_name }}", port = "443", transport = "tcp" }
--- };
+turncredentials = {
+  { type = "stun", host = "{{ jitsi_meet_server_name }}", port = "443" },
+  { type = "turn", host = "{{ jitsi_meet_server_name }}", port = "443", transport = "udp" },
+  { type = "turns", host = "{{ jitsi_meet_server_name }}", port = "443", transport = "tcp" }
+};
 
 cross_domain_bosh = false;
 consider_bosh_secure = true;
@@ -37,7 +37,7 @@ VirtualHost "{{ jitsi_meet_server_name }}"
             "pubsub";
             "ping"; -- Enable mod_ping
             "speakerstats";
-            -- "turncredentials";
+            "turncredentials";
             "conference_duration";
         }
         c2s_require_encryption = false
@@ -71,7 +71,6 @@ Component "focus.{{ jitsi_meet_server_name }}"
 
 Component "speakerstats.{{ jitsi_meet_server_name }}" "speakerstats_component"
     muc_component = "conference.{{ jitsi_meet_server_name }}"
-
 
 Component "conferenceduration.{{ jitsi_meet_server_name }}" "conference_duration_component"
     muc_component = "conference.{{ jitsi_meet_server_name }}"

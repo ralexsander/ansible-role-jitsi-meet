@@ -1,14 +1,14 @@
 ---
 
-- name: Copy global prosody config template
-  template:
-    src: prosody_global_config.j2
-    dest: "/etc/prosody/prosody.cfg.lua"
-    owner: root
-    group: root
-    mode: "0644"
-    validate: "luac -p %s"
-  notify: restart prosody
+# - name: Copy global prosody config template
+#   template:
+#     src: prosody_global_config.j2
+#     dest: "/etc/prosody/prosody.cfg.lua"
+#     owner: root
+#     group: root
+#     mode: "0644"
+#     validate: "luac -p %s"
+#   notify: restart prosody
 
 - name: Copy prosody config template.
   template:

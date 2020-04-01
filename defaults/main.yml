@@ -1,5 +1,7 @@
 ---
 
+prosody_turncredentials_secret: 'pfgFYjnn'
+
 # Without SSL, "localhost" is the correct default. If SSL info is provided,
 # then we'll need a real domain name. Using Ansible's inferred FQDN, but you
 # can set the variable value explicitly if you use a shorter hostname

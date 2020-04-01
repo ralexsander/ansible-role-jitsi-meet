@@ -8,13 +8,13 @@
 
 - include: prosody.yml
 
-- include: jitsi_meet.yml
+# - include: jitsi_meet.yml
 
-- include: jicofo.yml
+# - include: jicofo.yml
 
-- include: sip.yml
+# - include: sip.yml
 
-- include: videobridge.yml
+# - include: videobridge.yml
 
 - include: nginx.yml
   when: jitsi_meet_configure_nginx  | bool
