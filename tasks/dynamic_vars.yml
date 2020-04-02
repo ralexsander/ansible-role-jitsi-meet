@@ -27,7 +27,7 @@
   failed_when: jitsi_meet_jicofo_secret_result.rc != 0 or
                not jitsi_meet_jicofo_secret_result.stdout
 
-- name: Set fact for Jitsi Videobridge secret var.
+- name: Set fact for Jicofo secret var.
   set_fact:
     jitsi_meet_jicofo_secret: "{{ jitsi_meet_jicofo_secret_result.stdout }}"
   # Permit custom secrets in the template; only set the var if no custom secret is declared.
@@ -44,7 +44,7 @@
   failed_when: jitsi_meet_jicofo_password_result.rc != 0 or
                not jitsi_meet_jicofo_password_result.stdout
 
-- name: Set fact for Jitsi user auth password var.
+- name: Set fact for Jicofo user auth password var.
   set_fact:
     jitsi_meet_jicofo_password: "{{ jitsi_meet_jicofo_password_result.stdout }}"
   # Permit custom secrets in the template; only set the var if no custom secret is declared.

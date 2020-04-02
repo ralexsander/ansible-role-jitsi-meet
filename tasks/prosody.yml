@@ -1,15 +1,5 @@
 ---
 
-# - name: Copy global prosody config template
-#   template:
-#     src: prosody_global_config.j2
-#     dest: "/etc/prosody/prosody.cfg.lua"
-#     owner: root
-#     group: root
-#     mode: "0644"
-#     validate: "luac -p %s"
-#   notify: restart prosody
-
 - name: Copy prosody config template.
   template:
     src: prosody_config.j2
@@ -55,12 +45,12 @@
 
 - name: Register jvb agent with Prosody service.
   command: >
-    prosodyctl register jvb auth.{{ jitsi_meet_server_name }} {{ jitsi_meet_videobridge_password }}
+    prosodyctl register jvb auth.{{ jitsi_meet_server_name }} {{ jitsi_meet_videobridge_secret }}
   args:
     # Yes, prosody actually URL-escapes the directory name for some reason.
     # Must hardcode the escaping in the prefix, since the replace filter only
     # applies to the server name var, not the concatenated string.
-    creates: /var/lib/prosody/{{ 'jvg%2e'+jitsi_meet_server_name | replace('.', '%2e') |  replace('-', '%2d') }}/accounts/jvb.dat
+    creates: /var/lib/prosody/{{ 'auth%2e'+jitsi_meet_server_name | replace('.', '%2e') |  replace('-', '%2d') }}/accounts/jvb.dat
   notify:
     - restart jicofo
     - restart prosody
@@ -85,48 +75,32 @@
 
 - name: Set file mode on certificates
   file:
-    path: "/var/lib/prosody/{{ jitsi_meet_server_name }}.crt"
+    path: "/var/lib/prosody/{{ item }}"
     owner: root
     group: prosody
     mode: '0640'
   with_items:
-    - /var/lib/prosody/{{ jitsi_meet_server_name }}.crt
-    - /var/lib/prosody/{{ jitsi_meet_server_name }}.key
-    - /var/lib/prosody/auth.{{ jitsi_meet_server_name }}.crt
-    - /var/lib/prosody/auth.{{ jitsi_meet_server_name }}.key
+    - "{{ jitsi_meet_server_name }}.crt"
+    - "{{ jitsi_meet_server_name }}.key"
+    - "auth.{{ jitsi_meet_server_name }}.crt"
+    - "auth.{{ jitsi_meet_server_name }}.key"
 
 - name: Assure localhost mode
   file:
     path: "/etc/prosody/certs/localhost.key"
     mode: '0644'
 
-- name: Symlink prosody certs
+- name: Symlink prosody certs and keys
   file:
-    path: "/etc/prosody/certs/{{ jitsi_meet_server_name }}.crt"
+    path: "/etc/prosody/certs/{{ item }}"
     state: link
-    src:  "/var/lib/prosody/{{ jitsi_meet_server_name }}.crt"
+    src:  "/var/lib/prosody/{{ item }}"
   notify: restart prosody
-
-- name: Symlink prosody key
-  file:
-    path: "/etc/prosody/certs/{{ jitsi_meet_server_name }}.key"
-    state: link
-    src:  "/var/lib/prosody/{{ jitsi_meet_server_name }}.key"
-  notify: restart prosody
-
-- name: Symlink prosody auth certs
-  file:
-    path: "/etc/prosody/certs/auth.{{ jitsi_meet_server_name }}.crt"
-    state: link
-    src:  "/var/lib/prosody/auth.{{ jitsi_meet_server_name }}.crt"
-  notify: restart prosody
-
-- name: Symlink prosody auth key
-  file:
-    path: "/etc/prosody/certs/auth.{{ jitsi_meet_server_name }}.key"
-    state: link
-    src:  "/var/lib/prosody/auth.{{ jitsi_meet_server_name }}.key"
-  notify: restart prosody
+  with_items:
+    - "{{ jitsi_meet_server_name }}.key"
+    - "{{ jitsi_meet_server_name }}.crt"
+    - "auth.{{ jitsi_meet_server_name }}.key"
+    - "auth.{{ jitsi_meet_server_name }}.crt"
 
 - name: Symlink prosody auth certs to ca-certificates
   file:
