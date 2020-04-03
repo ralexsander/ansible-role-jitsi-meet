@@ -1,16 +1,11 @@
 ---
+
 - name: Install base apt packages.
   apt:
     name: "{{ jitsi_meet_base_packages }}"
     state: present
     update_cache: yes
     cache_valid_time: 3600
-
-- name: Install Nginx if it was indicated.
-  apt:
-    name: nginx
-    state: latest
-  when: jitsi_meet_configure_nginx
 
 # Prior versions of the role were writing to this file, let's
 # clean it up and use a generalized filename for configuring the apt repo,
@@ -37,6 +32,7 @@
     state: "{{ 'present' if jitsi_strategy == item.key else 'absent' }}"
     # Ansible will automatically add the ".list" suffix.
     filename: /etc/apt/sources.list.d/jitsi_meet
+    update_cache: yes
   with_dict: "{{ jitsi_meet_apt_repos }}"
 
 - name: Set debconf options for jitsi-meet.
@@ -50,6 +46,5 @@
 - name: Install Jitsi Meet
   apt:
     name: jitsi-meet
-    state: latest
-    update_cache: yes
-    cache_valid_time: 3600
+    state: present
+    install_recommends: "{{ jitsi_meet_install_recommends }}"

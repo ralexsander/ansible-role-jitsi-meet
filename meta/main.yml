@@ -16,6 +16,10 @@ galaxy_info:
       versions:
         - jessie
         - stretch
+        - buster
+    - name: Ubuntu
+      versions:
+        - bionic
   galaxy_tags:
     - system
     - webconference
