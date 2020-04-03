@@ -23,6 +23,11 @@ Role Variables
 --------------
 
 ```yaml
+########################################
+###### most important variables ########
+# and that you must adapt to your case #
+########################################
+
 # Without SSL, "localhost" is the correct default. If SSL info is provided,
 # then we'll need a real domain name. Using Ansible's inferred FQDN, but you
 # can set the variable value explicitly if you use a shorter hostname
@@ -30,27 +35,59 @@ Role Variables
 # another role will manage the vhost config.
 jitsi_meet_server_name: "{{ ansible_fqdn | default('localhost') }}"
 
+# Note from official documentation:
+# The installer will check if Nginx or Apache is present (in that order) and configure
+# a virtualhost within the web server it finds to serve Jitsi Meet. If none of the above
+# is found it then defaults to Nginx. If you are already running Nginx on port 443 on
+# the same machine you better skip the turnserver configuration as it will conflict with
+# your current port 443, so use the command apt install --no-install-recommends jitsi-meet
+jitsi_meet_install_recommends: no
+
+# If (jitsi_meet_install_recommends == no), there won't be turnserver installed and available
+jitsi_meet_use_stun_turn: 'false'
+
 # Configure nginx and jitsi-meet to listening also IPv6
 jitsi_meet_ipv6_enable: true
 
 # It allows you to specify the installation of jitsi meet creating and configuring
 # self-signed HTTPS certificates, which can then be replaced by Let's Encrypt certificates
 jitsi_meet_cert_choice: "Generate a new self-signed certificate (You will later get a chance to obtain a Let's encrypt certificate)"
+# Due to the behavior of the Jitsi installer scripts, it is recommended to keep this value, even if you
+# plan to use your own generated certificates (for example). with certbot. You can do it from this role
 
-# The default cert files are /var/lib/prosody/localhost.{crt,key}
 # NOT setting them here, because empty strings for custom certs will
 # cause the custom Nginx config tasks to be skipped.
 jitsi_meet_ssl_cert_path: ''
 jitsi_meet_ssl_key_path: ''
 
+#############
+### NGINX ###
+# This role will automatically configure a nginx vhost for use with jitsi-meet.
+# If you prefer to manage web vhosts via a separate role, set this to false.
+jitsi_meet_configure_nginx: true
+
+
+
+###########################################
+# other useful variables to customize the #
+# installation, but less frequently used  #
+###########################################
+
+# The Debian package installation of jitsi-meet will generate secrets for the components.
+# The role will read the config file and preserve the secrets even while templating.
+# If you wish to generate your own secrets and use those, override these vars, but make
+# sure to store the secrets securely, e.g. with ansible-vault or credstash.
+jitsi_meet_videobridge_secret: ''
+jitsi_meet_jicofo_secret: ''
+jitsi_meet_jicofo_password: ''
+
+##################
+### APT things ###
 # List of packages that need to be installed before jitsi meet
 jitsi_meet_base_packages:
   - apt-transport-https
   - debconf
   - debconf-utils
-
-# Only "anonymous" auth is supported, which lets anyone use the videoconference server.
-jitsi_meet_authentication: anonymous
 
 # Whether to use nightly builds of the Jitsi Meet components.
 jitsi_meet_use_nightly_apt_repo: false
@@ -63,50 +100,6 @@ jitsi_meet_apt_repos:
 
 jitsi_meet_apt_key_url: 'https://download.jitsi.org/jitsi-key.gpg.key'
 jitsi_meet_apt_key_id: '66A9CD0595D6AFA247290D3BEF8B479E2DC1389C'
-
-# The Debian package installation of jitsi-meet will generate secrets for the components.
-# The role will read the config file and preserve the secrets even while templating.
-# If you wish to generate your own secrets and use those, override these vars, but make
-# sure to store the secrets securely, e.g. with ansible-vault or credstash.
-jitsi_meet_videobridge_secret: ''
-jitsi_meet_videobridge_password: 'zMyJJHRg7M4V2yPDd7J3n' # Change me and put me in a vault!
-jitsi_meet_jicofo_secret: ''
-jitsi_meet_jicofo_password: ''
-
-# Default auth information, used in multiple service templates.
-jitsi_meet_jicofo_user: focus
-jitsi_meet_jicofo_port: 5347
-
-# The Jitsi components use the standard Java log levels, see:
-# https://docs.oracle.com/javase/7/docs/api/java/util/logging/Level.html
-# When using log aggregation for jitsi-meet components, set to "WARNING".
-jitsi_meet_jicofo_loglevel: INFO
-# The default config file at /etc/jitsi/videobridge/config claims the default port
-# for JVB is "5275", but the manual install guide references "5347".
-# https://github.com/jitsi/jitsi-meet/blob/master/doc/manual-install.md
-jitsi_meet_videobridge_port: 5347
-
-jitsi_meet_videobridge_loglevel: INFO
-# A recent privacy-friendly addition, see here for details:
-# https://github.com/jitsi/jitsi-meet/issues/422
-# https://github.com/jitsi/jitsi-meet/pull/427
-jitsi_meet_disable_third_party_requests: true
-
-# Screensharing config for Chrome. You'll need to build and package a browser
-# extension specifically for your domain; see https://github.com/jitsi/jidesha
-jitsi_meet_desktop_sharing_chrome_method: 'ext'
-jitsi_meet_desktop_sharing_chrome_disabled: 'false'
-jitsi_meet_desktop_sharing_chrome_ext_id: 'diibjkoicjeejcmhdnailmkgecihlobk'
-
-# Path to local extension on disk, for copying to target host. The remote filename
-# will be the basename of the path provided here.
-jitsi_meet_desktop_sharing_chrome_extension_filename: ''
-
-# Screensharing config for Firefox. Set max_version to '42' and disabled to 'false'
-# if you want to use screensharing under Firefox.
-jitsi_meet_desktop_sharing_firefox_ext_id: 'null'
-jitsi_meet_desktop_sharing_firefox_disabled: 'false'
-jitsi_meet_desktop_sharing_firefox_max_version_ext_required: '-1'
 
 # These debconf settings represent answers to interactive prompts during installation
 # of the jitsi-meet deb package. If you use custom SSL certs, you may have to set more options.
@@ -136,14 +129,67 @@ jitsi_meet_debconf_settings:
     value: "{{ jitsi_meet_ssl_cert_path }}"
     vtype: string
 
-# Role will automatically install configure ufw with jitsi-meet port holes.
+
+#######################
+### Server firewall ###
+# This role will automatically install configure ufw with jitsi-meet port holes.
 # If you're managing a firewall elsewise, set this to false, and ufw will be skipped.
 jitsi_meet_configure_firewall: true
 
-# Role will automatically install nginx and configure a vhost for use with jitsi-meet.
-# If you prefer to manage web vhosts via a separate role, set this to false.
-jitsi_meet_configure_nginx: true
+##############
+### Jicofo ###
+# Default auth information, used in multiple service templates.
+jitsi_meet_jicofo_user: focus
+jitsi_meet_jicofo_port: 5347
+# The Jitsi components use the standard Java log levels, see:
+# https://docs.oracle.com/javase/7/docs/api/java/util/logging/Level.html
+# When using log aggregation for jitsi-meet components, set to "WARNING".
+jitsi_meet_jicofo_loglevel: INFO
 
+###################
+### Videobridge ###
+# The default config file at /etc/jitsi/videobridge/config claims the default port
+# for JVB is "5275", but the manual install guide references "5347".
+# https://github.com/jitsi/jitsi-meet/blob/master/doc/manual-install.md
+jitsi_meet_videobridge_port: 5347
+jitsi_meet_videobridge_loglevel: INFO
+
+############
+### Meet ###
+# Only "anonymous" auth is supported, which lets anyone use the videoconference server.
+jitsi_meet_authentication: anonymous
+
+# A recent privacy-friendly addition, see here for details:
+# https://github.com/jitsi/jitsi-meet/issues/422
+# https://github.com/jitsi/jitsi-meet/pull/427
+jitsi_meet_disable_third_party_requests: true
+
+# Screensharing config for Chrome. You'll need to build and package a browser
+# extension specifically for your domain; see https://github.com/jitsi/jidesha
+jitsi_meet_desktop_sharing_chrome_method: 'ext'
+jitsi_meet_desktop_sharing_chrome_disabled: 'false'
+jitsi_meet_desktop_sharing_chrome_ext_id: 'diibjkoicjeejcmhdnailmkgecihlobk'
+
+# Path to local extension on disk, for copying to target host. The remote filename
+# will be the basename of the path provided here.
+jitsi_meet_desktop_sharing_chrome_extension_filename: ''
+
+# Screensharing config for Firefox. Set max_version to '42' and disabled to 'false'
+# if you want to use screensharing under Firefox.
+jitsi_meet_desktop_sharing_firefox_ext_id: 'null'
+jitsi_meet_desktop_sharing_firefox_disabled: 'false'
+jitsi_meet_desktop_sharing_firefox_max_version_ext_required: '-1'
+
+###################
+### SIP gateway ###
+jitsi_meet_configure_sip_gateway: false
+jitsi_meet_jigasi_account: sipnumber@sip-provider.name
+jitsi_meet_jigasi_password: fdi49fndKjhe3
+
+jitsi_meet_jigasi_jicofo_sip_template: jicofo_sip-communicator.properties.j2
+jitsi_meet_jigasi_videobridge_sip_template: videobridge_sip-communicator.properties.j2
+
+########################
 ### UI customization ###
 jitsi_meet_customize_the_ui: false
 
@@ -152,24 +198,23 @@ jitsi_meet_appname: 'My app name'
 jitsi_meet_org_link: 'https://link-to-my-organization.com'
 jitsi_meet_welcomepage_title: 'Secure, fully featured, and completely free video conferencing'
 jitsi_meet_welcomepage_description: 'Go ahead, video chat with the whole team. In fact, invite everyone you know. __app__ is a fully encrypted, 100% open source video conferencing solution that you can use all day, every day, for free — with no account needed.'
+
+# By default it is an empty string because the CSS file is a bundled file for
+# the entire site, and it change very frequently with each release. It will be
+# replaced only if you have a custom CSS file and indicate its path in this variable
+jitsi_meet_css_file: ''
 jitsi_meet_welcome_page_additions_file: welcomePageAdditionalContent.html.j2
-jitsi_meet_css_file: all.css.j2
+
 jitsi_meet_favicon_file: images/favicon.ico
 jitsi_meet_logo_file: images/jitsilogo.png
 jitsi_meet_watermark_file: images/watermark.png
+
 jitsi_meet_default_background: '#474747'
 jitsi_meet_disable_video_background: 'false'
 jitsi_meet_default_remote_display_name: 'Fellow Jitster'
 jitsi_meet_default_local_display_name: 'me'
 jitsi_meet_generate_roomnames_on_welcome_page: 'true'
 jitsi_meet_lang_detection: 'false'    # Allow i18n to detect the system language
-
-### Jibri integration ###
-jibri_enable: false
-jibri_recording: false
-jibri_streaming: false
-jibri_user_jibri_password: "jibriauthpass"
-jibri_user_recorder_password: "jibrirecorderpass"
 ```
 
 Screen sharing
@@ -251,8 +296,6 @@ Author Information
 ------------------
 
 [Freedom of the Press Foundation], [UdelaR Interior], [@santiagomr]
-
-Updates made in March 2020, inspired by [SWITCH](https://www.switch.ch/) [role](https://github.com/switch-ch/jitsi-deploy/tree/master/ansible/roles/jitsi) released as part of a [larger project](https://github.com/switch-ch/jitsi-deploy)
 
 [Jitsi Meet]: https://github.com/jitsi/jitsi-meet
 [LetsEncrypt]: https://letsencrypt.org/

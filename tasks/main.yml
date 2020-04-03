@@ -6,8 +6,6 @@
   # Import to run these tasks after package installation, but before config tasks.
 - include: dynamic_vars.yml
 
-- include: prosody.yml
-
 - include: jitsi_meet.yml
 
 - include: jicofo.yml
@@ -26,6 +24,7 @@
 - include: clean_up_default_configs.yml
   when: jitsi_meet_server_name != 'localhost'
 
+  # Official recommended tweaks
 - include: systemd.yml
 
 - include: ui_customization.yml
@@ -33,4 +32,5 @@
 
   # Placing the browser extensions last so the associated debugging tasks
   # that display URLs are visible near the end of the play.
+  # Build your own with https://github.com/jitsi/jidesha
 - include: browser_extensions.yml

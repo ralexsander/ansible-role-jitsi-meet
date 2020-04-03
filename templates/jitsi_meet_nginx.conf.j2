@@ -19,9 +19,9 @@ server {
     }
 }
 server {
-    listen 443 ssl;
+    listen {{ '4444 http2' if(jitsi_meet_install_recommends) else '443'}} ssl;
 {% if(jitsi_meet_ipv6_enable) %}
-    listen [::]:443 ssl;
+    listen [::]:{{ '4444 http2' if(jitsi_meet_install_recommends) else '443'}} ssl;
 {% endif %}
     server_name {{ jitsi_meet_server_name }};
 
