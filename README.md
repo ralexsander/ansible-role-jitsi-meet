@@ -46,6 +46,11 @@ jitsi_meet_install_recommends: no
 # If (jitsi_meet_install_recommends == no), there won't be turnserver installed and available
 jitsi_meet_use_stun_turn: 'false'
 
+# The STUN servers that will be used in the peer to peer connections
+jitsi_meet_stun_servers:
+  - 'stun:meet-jit-si-turnrelay.jitsi.net:443'
+  # - 'stun:{{ jitsi_meet_server_name }}:443'
+
 # Configure nginx and jitsi-meet to listening also IPv6
 jitsi_meet_ipv6_enable: true
 
