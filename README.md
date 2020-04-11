@@ -1,7 +1,7 @@
 jitsi-meet
 =========
 
-[![Galaxy](https://img.shields.io/badge/galaxy-UdelaRInterior.jitsi_meet-blue.svg)](https://galaxy.ansible.com/ralexsander/jitsi_meet)
+[![Galaxy](https://img.shields.io/badge/galaxy-ralexsander.jitsi_meet-blue.svg)](https://galaxy.ansible.com/ralexsander/jitsi_meet)
 
 Installs and configures the [Jitsi Meet] videoconferencing software.
 
