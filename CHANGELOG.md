@@ -1,5 +1,11 @@
 # Change Log
 
+## [v2.0.1](https://github.com/ralexsander/ansible-role-jitsi-meet/tree/v2.0.1)
+
+### Minor changes Jitsi Meet v2.X
+
+* Include option to enable Calendar Integration with Google or Microsoft.
+
 ## [v2.0.0](https://github.com/UdelaRInterior/ansible-role-jitsi-meet/tree/v2.0.0)
 
 ### Second version of the role, designed for Jitsi Meet v2.X

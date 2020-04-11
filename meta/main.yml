@@ -5,10 +5,12 @@ galaxy_info:
     - '@ageis'
     - '@conorsch'
     - '@santiagomr'
+    - '@ralexsander'
   description: Installs Jitsi Meet videoconferencing software
   company:
     - '@freedomofpress'
     - '@UdelaRInterior'
+    - '@KenosSGI'
   license: MIT
   min_ansible_version: 2.7
   platforms:
