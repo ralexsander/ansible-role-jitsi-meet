@@ -1,7 +1,7 @@
 jitsi-meet
 =========
 
-[![Galaxy](https://img.shields.io/badge/galaxy-UdelaRInterior.jitsi_meet-blue.svg)](https://galaxy.ansible.com/udelarinterior/jitsi_meet)
+[![Galaxy](https://img.shields.io/badge/galaxy-UdelaRInterior.jitsi_meet-blue.svg)](https://galaxy.ansible.com/ralexsander/jitsi_meet)
 
 Installs and configures the [Jitsi Meet] videoconferencing software.
 
@@ -278,7 +278,7 @@ Including an example of how to use your role (for instance, with variables passe
             - "{{ jitsi_meet_server_name }}"
       certbot_create_standalone_stop_services: []
 
-    - role: udelarinterior.jitsi_meet
+    - role: ralexsander.jitsi_meet
       jitsi_meet_ssl_cert_path: "/etc/letsencrypt/live/{{ jitsi_meet_server_name }}/fullchain.pem"
       jitsi_meet_ssl_key_path: "/etc/letsencrypt/live/{{ jitsi_meet_server_name }}/privkey.pem"
       become: yes
