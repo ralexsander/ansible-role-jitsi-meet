@@ -306,6 +306,14 @@ var config = {
     // Enables calendar integration, depends on googleApiApplicationClientID
     // and microsoftApiApplicationClientID
     // enableCalendarIntegration: false,
+    enableCalendarIntegration: {{ jitsi_meet_calendar_integration | default ('false') }},
+
+{% if jitsi_meet_google_api_client_id is defined %}
+    googleApiApplicationClientID: '{{ jitsi_meet_google_api_client_id }}',
+{% endif %}
+{% if jitsi_meet_ms_api_client_id is defined %}
+    microsoftApiApplicationClientID: '{{ jitsi_meet_ms_api_client_id }}',
+{% endif %}
 
     // Stats
     //

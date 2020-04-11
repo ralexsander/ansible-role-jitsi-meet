@@ -65,6 +65,20 @@ jitsi_meet_cert_choice: "Generate a new self-signed certificate (You will later 
 jitsi_meet_ssl_cert_path: ''
 jitsi_meet_ssl_key_path: ''
 
+# Enables calendar on Jitsi homepage, when its enabled you should
+# configure the Google API Key or Microsoft API Key or both.
+jitsi_meet_calendar_integration: false
+
+# Google API for Calendar Integration
+# If you dont know how to adquire the API Key follow the link below:
+# https://github.com/jitsi/jitsi-meet/blob/master/doc/integrations.md#creating-the-google-api-client-for-google-calendar-and-youtube-integration
+jitsi_meet_google_api_client_id: ''
+
+# Microsoft API for Calendar Integration
+# If you dont know how to adquire the API Key follow the link below:
+# https://github.com/jitsi/jitsi-meet/blob/master/doc/integrations.md#creating-the-microsoft-app-for-microsoft-outlook-integration
+jitsi_meet_ms_api_client_id: ''
+
 #############
 ### NGINX ###
 # This role will automatically configure a nginx vhost for use with jitsi-meet.
@@ -311,4 +325,3 @@ Author Information
 [Molecule]: http://molecule.readthedocs.org/en/master/
 [ServerSpec]: http://serverspec.org/
 [Jidesha]: https://github.com/jitsi/jidesha
-
