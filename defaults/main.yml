@@ -135,6 +135,11 @@ jitsi_meet_jicofo_loglevel: INFO
 # https://github.com/jitsi/jitsi-meet/blob/master/doc/manual-install.md
 jitsi_meet_videobridge_port: 5347
 jitsi_meet_videobridge_loglevel: INFO
+jitsi_meet_videobridge_opts: '--apis=rest,'             # comma separated list
+
+jitsi_meet_videobridge_statistics_enable: false
+jitsi_meet_videobridge_statistics_interval: 5000
+jitsi_meet_videobridge_statistics_transport: 'colibri,xmpp'  # comma separated list
 
 ############
 ### Meet ###
