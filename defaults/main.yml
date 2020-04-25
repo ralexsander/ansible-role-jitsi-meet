@@ -119,10 +119,10 @@ jitsi_meet_debconf_settings:
 jitsi_meet_configure_firewall: true
 
 jitsi_meet_firewall_ports_allow:
-  - tcp:
+  tcp:
     - "80"   # HTTP / Lets Encrypt
     - "443"  # HTTPS
-  - udp:
+  udp:
     - "10000" # Videobridge
 
 

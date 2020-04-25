@@ -142,10 +142,10 @@ jitsi_meet_debconf_settings:
 jitsi_meet_configure_firewall: true
 
 jitsi_meet_firewall_ports_allow:
-  - tcp:
+  tcp:
     - "80"   # HTTP / Lets Encrypt
     - "443"  # HTTPS
-  - udp:
+  udp:
     - "10000" # Videobridge
 
 **Warning**: until Version 2.0.0 of this playbook also ssh (22) was enabled. This is not a ssh ansible role, so we skipped this as default.
