@@ -311,4 +311,3 @@ Author Information
 [Molecule]: http://molecule.readthedocs.org/en/master/
 [ServerSpec]: http://serverspec.org/
 [Jidesha]: https://github.com/jitsi/jidesha
-
