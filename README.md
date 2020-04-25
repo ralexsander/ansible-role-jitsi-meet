@@ -141,6 +141,15 @@ jitsi_meet_debconf_settings:
 # If you're managing a firewall elsewise, set this to false, and ufw will be skipped.
 jitsi_meet_configure_firewall: true
 
+jitsi_meet_firewall_ports_allow:
+  - tcp:
+    - "80"   # HTTP / Lets Encrypt
+    - "443"  # HTTPS
+  - udp:
+    - "10000" # Videobridge
+
+**Warning**: until Version 2.0.0 of this playbook also ssh (22) was enabled. This is not a ssh ansible role, so we skipped this as default.
+
 ##############
 ### Jicofo ###
 # Default auth information, used in multiple service templates.
@@ -311,4 +320,3 @@ Author Information
 [Molecule]: http://molecule.readthedocs.org/en/master/
 [ServerSpec]: http://serverspec.org/
 [Jidesha]: https://github.com/jitsi/jidesha
-
