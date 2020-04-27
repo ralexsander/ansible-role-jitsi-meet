@@ -118,6 +118,14 @@ jitsi_meet_debconf_settings:
 # If you're managing a firewall elsewise, set this to false, and ufw will be skipped.
 jitsi_meet_configure_firewall: true
 
+jitsi_meet_firewall_ports_allow:
+  tcp:
+    - "80"   # HTTP / Lets Encrypt
+    - "443"  # HTTPS
+  udp:
+    - "10000" # Videobridge
+
+
 ##############
 ### Jicofo ###
 # Default auth information, used in multiple service templates.
