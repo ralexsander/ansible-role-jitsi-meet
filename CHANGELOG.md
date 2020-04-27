@@ -1,5 +1,10 @@
 # Change Log
 
+## Not released yet
+
+* Change jitsi_meet_disable_third_party_requests default from true to false and make it work with ansible.
+
+
 ## [v2.0.0](https://github.com/UdelaRInterior/ansible-role-jitsi-meet/tree/v2.0.0)
 
 ### Second version of the role, designed for Jitsi Meet v2.X

@@ -149,10 +149,11 @@ jitsi_meet_videobridge_loglevel: INFO
 # Only "anonymous" auth is supported, which lets anyone use the videoconference server.
 jitsi_meet_authentication: anonymous
 
-# A recent privacy-friendly addition, see here for details:
+# Shall JitsiMeet contact gravatar.com / a recent privacy-friendly addition, see here for details:
 # https://github.com/jitsi/jitsi-meet/issues/422
 # https://github.com/jitsi/jitsi-meet/pull/427
-jitsi_meet_disable_third_party_requests: true
+jitsi_meet_disable_third_party_requests: false
+
 
 # Screensharing config for Chrome. You'll need to build and package a browser
 # extension specifically for your domain; see https://github.com/jitsi/jidesha
