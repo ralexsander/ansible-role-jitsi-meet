@@ -156,6 +156,11 @@ jitsi_meet_videobridge_statistics_enable: false
 jitsi_meet_videobridge_statistics_interval: 5000
 jitsi_meet_videobridge_statistics_transport: 'colibri,xmpp'  # comma separated list
 
+# Configure reverse proxy to publish colibri/stats over HTTPS
+# https://{{ jitsi_meet_server_name }}/colibri/stats
+jitsi_meet_expose_colibri_stats: false
+
+
 ############
 ### Meet ###
 # Only "anonymous" auth is supported, which lets anyone use the videoconference server.

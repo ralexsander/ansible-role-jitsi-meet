@@ -173,6 +173,16 @@ jitsi_meet_jigasi_jicofo_sip_template: jicofo_sip-communicator.properties.j2
 # https://github.com/jitsi/jitsi-meet/blob/master/doc/manual-install.md
 jitsi_meet_videobridge_port: 5347
 jitsi_meet_videobridge_loglevel: INFO
+jitsi_meet_videobridge_opts: '--apis=rest,'             # comma separated list
+
+jitsi_meet_videobridge_statistics_enable: false
+jitsi_meet_videobridge_statistics_interval: 5000
+jitsi_meet_videobridge_statistics_transport: 'colibri,xmpp'  # comma separated list
+
+# Configure nginx reverse proxy to publish /colibri/stats over HTTPS
+# https://{{ jitsi_meet_server_name }}/colibri/stats
+jitsi_meet_expose_colibri_stats: false
+
 
 ############
 ### Meet ###
