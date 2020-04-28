@@ -1,7 +1,7 @@
 jitsi-meet
 =========
 
-[![Galaxy](https://img.shields.io/badge/galaxy-UdelaRInterior.jitsi_meet-blue.svg)](https://galaxy.ansible.com/udelarinterior/jitsi_meet)
+[![Galaxy](https://img.shields.io/badge/galaxy-UdelaRInterior.jitsi__meet-blue.svg)](https://galaxy.ansible.com/udelarinterior/jitsi_meet) ![GitHub release (latest by date)](https://img.shields.io/github/v/release/udelarinterior/ansible-role-jitsi-meet?style=social) ![GitHub stars](https://img.shields.io/github/stars/udelarinterior/ansible-role-jitsi-meet?style=social) ![GitHub forks](https://img.shields.io/github/forks/udelarinterior/ansible-role-jitsi-meet?style=social)
 
 Installs and configures the [Jitsi Meet] videoconferencing software.
 
@@ -9,15 +9,9 @@ Installs and configures the [Jitsi Meet] videoconferencing software.
 Requirements
 ------------
 
-You should have DNS pointed at the server already, and SSL keys. If you don't have SSL
-keys for the domain yet, consider using the [geerlingguy.certbot] Ansible role
-to obtain (free!) SSL certs from [LetsEncrypt].
+You should have DNS pointed at the server already, and SSL keys. If you don't have SSL keys for the domain yet, consider using the [geerlingguy.certbot] Ansible role to obtain (free!) SSL certs from [LetsEncrypt].
 
-You will also need to expose ports 443 TCP and 10000 UDP for the Jitsi Meet
-components to work. By default the role will use `ufw` to allow these ports. If you
-use another host-based firewall solution such as iptables, set
-`jitsi_meet_configure_firewall: false`. If you use AWS or similar, you'll need to
-expose those ports in the associated Security Group.
+You will also need to expose ports 443 TCP and 10000 UDP for the Jitsi Meet components to work. This role can use `ufw` to allow these ports setting `jitsi_meet_configure_firewall: true`. If you use another host-based firewall solution such as iptables, keep `jitsi_meet_configure_firewall: false`. If you use AWS or similar, you'll need to expose those ports in the associated Security Group.
 
 Role Variables
 --------------
@@ -140,9 +134,9 @@ jitsi_meet_debconf_settings:
 
 #######################
 ### Server firewall ###
-# This role will automatically install configure ufw with jitsi-meet port holes.
-# If you're managing a firewall elsewise, set this to false, and ufw will be skipped.
-jitsi_meet_configure_firewall: true
+# This role can automatically install and configure ufw with jitsi-meet port holes setting this variable in true.
+# If you're managing a firewall elsewise, keep in false, and ufw tasks will be skipped.
+jitsi_meet_configure_firewall: false
 
 # WARNING: until v2.0.0 of this role, also SSH port (22/tcp) was enabled.
 # This role focuses on configuring Jitsi Meet, so to avoid overlapping with the rest of
@@ -195,7 +189,7 @@ jitsi_meet_expose_colibri_stats: false
 
 ############
 ### Meet ###
-# Only "anonymous" auth is supported, which lets anyone use the videoconference server.
+# "anonymous" lets anyone use the videoconference server.
 jitsi_meet_authentication: anonymous
 
 # Privacy-friendly addition, see here for details:

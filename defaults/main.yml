@@ -117,9 +117,9 @@ jitsi_meet_debconf_settings:
 
 #######################
 ### Server firewall ###
-# This role will automatically install configure ufw with jitsi-meet port holes.
-# If you're managing a firewall elsewise, set this to false, and ufw will be skipped.
-jitsi_meet_configure_firewall: true
+# This role can automatically install and configure ufw with jitsi-meet port holes setting this variable in true.
+# If you're managing a firewall elsewise, keep in false, and ufw tasks will be skipped.
+jitsi_meet_configure_firewall: false
 
 # WARNING: until v2.0.0 of this role, also SSH port (22/tcp) was enabled.
 # This role focuses on configuring Jitsi Meet, so to avoid overlapping with the rest of
@@ -172,7 +172,7 @@ jitsi_meet_expose_colibri_stats: false
 
 ############
 ### Meet ###
-# Only "anonymous" auth is supported, which lets anyone use the videoconference server.
+# "anonymous" lets anyone use the videoconference server.
 jitsi_meet_authentication: anonymous
 
 # Privacy-friendly addition, see here for details:

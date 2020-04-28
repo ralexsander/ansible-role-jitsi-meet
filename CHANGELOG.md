@@ -1,9 +1,19 @@
 # Change Log
 
-## Not released yet
+## [v3.0.0](https://github.com/UdelaRInterior/ansible-role-jitsi-meet/tree/v3.0.0)
 
-* Change jitsi_meet_disable_third_party_requests default from true to false and make it work with ansible.
-
+* **`jitsi_meet_install_recommends: no` changed to `jitsi_meet_install_recommends: yes` on *defaults/main.yml*** (See [PR #5729](https://github.com/jitsi/jitsi-meet/pull/5729))
+* **`jitsi_meet_configure_firewall: true` changed to `jitsi_meet_configure_firewall: false` on *defaults/main.yml***. To avoid overlapping with the rest of your roles/playbooks and lose SSH access. (This role focuses on configuring Jitsi Meet)
+* Manage videobridge stats and colibri exposure over HTTPS
+* Thanks to [@tabacha](https://github.com/tabacha):
+    * `jitsi_meet_disable_third_party_requests` used correctly ([#10](https://github.com/UdelaRInterior/ansible-role-jitsi-meet/pull/10))
+    * UFW ports configurable from vars ([#11](https://github.com/UdelaRInterior/ansible-role-jitsi-meet/pull/11))
+      **Note that now enabling SSH port isn't part of the default behavior**
+    * Manage Prosody authentication ([#12](https://github.com/UdelaRInterior/ansible-role-jitsi-meet/pull/12))
+* Thanks to [@fabiogermann](https://github.com/fabiogermann):
+    * Settings to run behind a NAT firewall ([#7](https://github.com/UdelaRInterior/ansible-role-jitsi-meet/pull/7))
+* Added Ansible tags for each component in *tasks/main.yml*
+* Various improvements in code quality
 
 ## [v2.0.0](https://github.com/UdelaRInterior/ansible-role-jitsi-meet/tree/v2.0.0)
 
