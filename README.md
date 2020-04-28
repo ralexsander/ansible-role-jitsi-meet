@@ -44,12 +44,15 @@ jitsi_meet_server_name: "{{ ansible_fqdn | default('localhost') }}"
 jitsi_meet_install_recommends: yes
 
 # If (jitsi_meet_install_recommends == no), there won't be turnserver installed and available
-jitsi_meet_use_stun_turn: 'false'
+jitsi_meet_use_stun_turn: false
 
 # The STUN servers that will be used in the peer to peer connections
 jitsi_meet_stun_servers:
   - 'stun:meet-jit-si-turnrelay.jitsi.net:443'
   # - 'stun:{{ jitsi_meet_server_name }}:443'
+
+# Enable the p2p mode
+jitsi_meet_enable_p2p_mode: true
 
 # Configure nginx and jitsi-meet to listening also IPv6
 jitsi_meet_ipv6_enable: true
@@ -152,6 +155,12 @@ jitsi_meet_firewall_ports_allow:
   udp:
     - "10000" # Videobridge
 
+### Other firewall
+# This will configure NATed connection to Jitsi Meet
+jitsi_meet_behind_nat_firewall: false
+jitsi_meet_nat_private_ip: 127.0.0.1
+jitsi_meet_nat_public_ip: 255.255.255.255
+
 
 ##############
 ### Jicofo ###
@@ -189,10 +198,10 @@ jitsi_meet_expose_colibri_stats: false
 # Only "anonymous" auth is supported, which lets anyone use the videoconference server.
 jitsi_meet_authentication: anonymous
 
-# A recent privacy-friendly addition, see here for details:
+# Privacy-friendly addition, see here for details:
 # https://github.com/jitsi/jitsi-meet/issues/422
 # https://github.com/jitsi/jitsi-meet/pull/427
-jitsi_meet_disable_third_party_requests: true
+jitsi_meet_disable_third_party_requests: false
 
 # Screensharing config for Chrome. You'll need to build and package a browser
 # extension specifically for your domain; see https://github.com/jitsi/jidesha
