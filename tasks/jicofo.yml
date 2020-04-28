@@ -17,7 +17,7 @@
     state: present
   notify: restart jicofo
 
-- name: jicofo sip-communicator properties
+- name: Jicofo sip-communicator properties
   become: yes
   template:
     src: "{{ jitsi_meet_jigasi_jicofo_sip_template }}"

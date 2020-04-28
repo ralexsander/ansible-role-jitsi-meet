@@ -19,7 +19,6 @@
     proto: udp
   with_items: "{{ jitsi_meet_firewall_ports_allow.udp }}"
 
-
 - name: Ensure UFW is running.
   ufw:
     name: ufw

@@ -21,7 +21,6 @@
       value: "{{ jitsi_meet_jigasi_password }}"
       vtype: string
 
-
 - name: Add videobridge sip-communicator config
   template:
     src: "{{ jitsi_meet_jigasi_videobridge_sip_template }}"

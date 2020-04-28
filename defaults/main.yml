@@ -18,7 +18,7 @@ jitsi_meet_server_name: "{{ ansible_fqdn | default('localhost') }}"
 # is found it then defaults to Nginx. If you are already running Nginx on port 443 on
 # the same machine you better skip the turnserver configuration as it will conflict with
 # your current port 443, so use the command apt install --no-install-recommends jitsi-meet
-jitsi_meet_install_recommends: no
+jitsi_meet_install_recommends: yes
 
 # If (jitsi_meet_install_recommends == no), there won't be turnserver installed and available
 jitsi_meet_use_stun_turn: 'false'
@@ -118,8 +118,12 @@ jitsi_meet_debconf_settings:
 # If you're managing a firewall elsewise, set this to false, and ufw will be skipped.
 jitsi_meet_configure_firewall: true
 
+# WARNING: until v2.0.0 of this role, also SSH port (22/tcp) was enabled.
+# This role focuses on configuring Jitsi Meet, so to avoid overlapping with the rest of
+# your roles/playbooks, the default values will be only the necessary ports for Jitsi
 jitsi_meet_firewall_ports_allow:
   tcp:
+    # - "22" # SSH
     - "80"   # HTTP / Lets Encrypt
     - "443"  # HTTPS
   udp:
@@ -135,6 +139,9 @@ jitsi_meet_jicofo_port: 5347
 # https://docs.oracle.com/javase/7/docs/api/java/util/logging/Level.html
 # When using log aggregation for jitsi-meet components, set to "WARNING".
 jitsi_meet_jicofo_loglevel: INFO
+
+jitsi_meet_jigasi_jicofo_sip_template: jicofo_sip-communicator.properties.j2
+
 
 ###################
 ### Videobridge ###
@@ -177,7 +184,6 @@ jitsi_meet_configure_sip_gateway: false
 jitsi_meet_jigasi_account: sipnumber@sip-provider.name
 jitsi_meet_jigasi_password: fdi49fndKjhe3
 
-jitsi_meet_jigasi_jicofo_sip_template: jicofo_sip-communicator.properties.j2
 jitsi_meet_jigasi_videobridge_sip_template: videobridge_sip-communicator.properties.j2
 
 ########################
