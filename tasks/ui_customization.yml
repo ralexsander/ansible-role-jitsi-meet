@@ -67,3 +67,13 @@
     mode: "0644"
   when: jitsi_meet_favicon_file is defined
         and jitsi_meet_favicon_file
+
+- name: Replace linking logo for a customized one
+  copy:
+    src: "{{ jitsi_meet_depp_linking_logo_file }}"
+    dest: /usr/share/jitsi-meet/images/logo-deep-linking.png
+    owner: root
+    group: root
+    mode: "0644"
+  when: jitsi_meet_depp_linking_logo_file is defined
+        and jitsi_meet_depp_linking_logo_file

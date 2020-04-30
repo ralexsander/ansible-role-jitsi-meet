@@ -234,6 +234,11 @@ jitsi_meet_default_remote_display_name: 'Fellow Jitster'
 jitsi_meet_default_local_display_name: 'me'
 jitsi_meet_generate_roomnames_on_welcome_page: 'true'
 jitsi_meet_lang_detection: 'false'    # Allow i18n to detect the system language
+
+jitsi_meet_download_link_android: 'https://play.google.com/store/apps/details?id=org.jitsi.meet'
+jitsi_meet_download_link_ios: 'https://itunes.apple.com/us/app/jitsi-meet/id1165103905'
+jitsi_meet_android_app_scheme: 'org.jitsi.meet'
+jitsi_meet_android_app_package: 'org.jitsi.meet'
 ```
 
 Screen sharing

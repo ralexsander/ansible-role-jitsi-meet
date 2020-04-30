@@ -207,13 +207,6 @@ var interfaceConfig = {
     DISABLE_JOIN_LEAVE_NOTIFICATIONS: false,
 
     /**
-    * Decides whether the chrome extension banner should be rendered on the landing page and during the meeting.
-    * If this is set to false, the banner will not be rendered at all. If set to true, the check for extension(s)
-    * being already installed is done before rendering.
-    */
-    SHOW_CHROME_EXTENSION_BANNER: false
-
-    /**
      * When enabled, the kick participant button will not be presented for users without a JWT
      */
     // HIDE_KICK_BUTTON_FOR_GUESTS: false
@@ -228,21 +221,33 @@ var interfaceConfig = {
      * Specify custom URL for downloading android mobile app.
      */
     // MOBILE_DOWNLOAD_LINK_ANDROID: 'https://play.google.com/store/apps/details?id=org.jitsi.meet',
+{% if jitsi_meet_download_link_android is defined %}
+    MOBILE_DOWNLOAD_LINK_ANDROID: '{{ jitsi_meet_download_link_android }}',
+{% endif %}
 
     /**
      * Specify URL for downloading ios mobile app.
      */
     // MOBILE_DOWNLOAD_LINK_IOS: 'https://itunes.apple.com/us/app/jitsi-meet/id1165103905',
+{% if jitsi_meet_download_link_ios is defined %}
+    MOBILE_DOWNLOAD_LINK_IOS: '{{ jitsi_meet_download_link_ios }}',
+{% endif %}
 
     /**
      * Specify mobile app scheme for opening the app from the mobile browser.
      */
     // APP_SCHEME: 'org.jitsi.meet',
+{% if jitsi_meet_android_app_scheme is defined %}
+    APP_SCHEME: '{{ jitsi_meet_android_app_scheme }}',
+{% endif %}
 
     /**
      * Specify the Android app package name.
      */
     // ANDROID_APP_PACKAGE: 'org.jitsi.meet',
+{% if jitsi_meet_android_app_package is defined %}
+    ANDROID_APP_PACKAGE: '{{ jitsi_meet_android_app_package }}',
+{% endif %}
 
     /**
      * Override the behavior of some notifications to remain displayed until
@@ -256,6 +261,13 @@ var interfaceConfig = {
      MOBILE_DYNAMIC_LINK
      PHONE_NUMBER_REGEX
     */
+
+    /**
+    * Decides whether the chrome extension banner should be rendered on the landing page and during the meeting.
+    * If this is set to false, the banner will not be rendered at all. If set to true, the check for extension(s)
+    * being already installed is done before rendering.
+    */
+    SHOW_CHROME_EXTENSION_BANNER: false
 };
 
 /* eslint-enable no-unused-vars, no-var, max-len */
