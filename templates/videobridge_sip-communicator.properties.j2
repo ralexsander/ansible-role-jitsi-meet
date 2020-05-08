@@ -1,8 +1,11 @@
 org.ice4j.ice.harvest.DISABLE_AWS_HARVESTER=true
 org.ice4j.ice.harvest.STUN_MAPPING_HARVESTER_ADDRESSES={{ (jitsi_meet_use_stun_turn) | ternary('meet-jit-si-turnrelay.jitsi.net:443', '') }}
 {{ (jitsi_meet_behind_nat_firewall) | ternary('#', '') }}org.jitsi.videobridge.AUTHORIZED_SOURCE_REGEXP=focus@auth.{{ jitsi_meet_server_name }}/.*
-org.jitsi.videobridge.ENABLE_STATISTICS=true
-org.jitsi.videobridge.STATISTICS_TRANSPORT=muc
+org.jitsi.videobridge.ENABLE_STATISTICS={{ jitsi_meet_videobridge_statistics_enable | bool | lower }}
+{% if (jitsi_meet_videobridge_statistics_enable | bool) %}
+org.jitsi.videobridge.STATISTICS_INTERVAL={{ jitsi_meet_videobridge_statistics_interval }}
+org.jitsi.videobridge.STATISTICS_TRANSPORT={{ jitsi_meet_videobridge_statistics_transport }}
+{% endif %}
 org.jitsi.videobridge.xmpp.user.shard.HOSTNAME=localhost
 org.jitsi.videobridge.xmpp.user.shard.DOMAIN=auth.{{ jitsi_meet_server_name }}
 org.jitsi.videobridge.xmpp.user.shard.USERNAME=jvb
