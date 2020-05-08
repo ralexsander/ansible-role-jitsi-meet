@@ -86,9 +86,9 @@ var config = {
     // Audio
 
     // Disable measuring of audio levels.
-    // disableAudioLevels: false,
+    disableAudioLevels: {{ jitsi_meet_disable_audio_levels | bool | lower }},
 
-    // audioLevelsInterval: 200,
+    audioLevelsInterval: {{ jitsi_meet_audio_levels_interval }},
 
     // Enabling this will run the lib-jitsi-meet no audio detection module which
     // will notify the user if the current selected microphone has no audio
@@ -104,7 +104,7 @@ var config = {
 
     // Start the conference in audio only mode (no video is being received nor
     // sent).
-    // startAudioOnly: false,
+    startAudioOnly: {{ jitsi_meet_start_audio_only | bool | lower }},
 
     // Every participant after the Nth will start audio muted.
     startAudioMuted: 3,
@@ -121,7 +121,7 @@ var config = {
     // Video
 
     // Sets the preferred resolution (height) for local video. Defaults to 720.
-    resolution: 480,
+    resolution: {{ jitsi_meet_resolution }},
 
     // w3c spec-compliant video constraints to use for video capture. Currently
     // used by browsers that return true from lib-jitsi-meet's
@@ -130,11 +130,11 @@ var config = {
     // ratio of 16:9 with an ideal resolution of 720.
      constraints: {
          video: {
-             aspectRatio: 16 / 9,
+             aspectRatio: {{ jitsi_meet_constraints_video_aspect_ratio }}
              height: {
-                 ideal: 480,
-                 max: 720,
-                 min: 240
+                 ideal: {{ jitsi_meet_constraints_video_height_ideal }},
+                 max: {{ jitsi_meet_constraints_video_height_max }},
+                 min: {{ jitsi_meet_constraints_video_height_min }}
              }
          }
      },
@@ -145,7 +145,7 @@ var config = {
     // Enable / disable layer suspension.  If enabled, endpoints whose HD
     // layers are not in use will be suspended (no longer sent) until they
     // are requested again.
-    // enableLayerSuspension: false,
+    enableLayerSuspension: {{ jitsi_meet_enable_layer_suspension | bool | lower }},
 
     // Every participant after the Nth will start video muted.
     // startVideoMuted: 10,
@@ -170,7 +170,7 @@ var config = {
     desktopSharingChromeExtId: '{{ jitsi_meet_desktop_sharing_chrome_ext_id }}',
 
     // Whether desktop sharing should be disabled on Chrome.
-    desktopSharingChromeDisabled: {{ jitsi_meet_desktop_sharing_chrome_disabled }},
+    desktopSharingChromeDisabled: {{ jitsi_meet_desktop_sharing_chrome_disabled | bool | lower }},
 
     // The media sources to use when using screen sharing with the Chrome
     // extension.
@@ -180,7 +180,7 @@ var config = {
     desktopSharingChromeMinExtVersion: '0.1',
 
     // Whether desktop sharing should be disabled on Firefox.
-    desktopSharingFirefoxDisabled: {{ jitsi_meet_desktop_sharing_firefox_disabled }},
+    desktopSharingFirefoxDisabled: {{ jitsi_meet_desktop_sharing_firefox_disabled | bool | lower }},
 
     // Optional desktop sharing frame rate options. Default value: min:5, max:5.
     // desktopSharingFrameRate: {
@@ -228,7 +228,7 @@ var config = {
     // Misc
 
     // Default value for the channel "last N" attribute. -1 for unlimited.
-    channelLastN: -1,
+    channelLastN: {{ jitsi_meet_channel_last_n }},
 
     // Disables or enables RTX (RFC 4588) (defaults to false).
     // disableRtx: false,

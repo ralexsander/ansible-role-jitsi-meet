@@ -200,7 +200,7 @@ jitsi_meet_disable_third_party_requests: false
 # Screensharing config for Chrome. You'll need to build and package a browser
 # extension specifically for your domain; see https://github.com/jitsi/jidesha
 jitsi_meet_desktop_sharing_chrome_method: 'ext'
-jitsi_meet_desktop_sharing_chrome_disabled: 'false'
+jitsi_meet_desktop_sharing_chrome_disabled: false
 jitsi_meet_desktop_sharing_chrome_ext_id: 'diibjkoicjeejcmhdnailmkgecihlobk'
 
 # Path to local extension on disk, for copying to target host. The remote filename
@@ -210,7 +210,7 @@ jitsi_meet_desktop_sharing_chrome_extension_filename: ''
 # Screensharing config for Firefox. Set max_version to '42' and disabled to 'false'
 # if you want to use screensharing under Firefox.
 jitsi_meet_desktop_sharing_firefox_ext_id: 'null'
-jitsi_meet_desktop_sharing_firefox_disabled: 'false'
+jitsi_meet_desktop_sharing_firefox_disabled: false
 jitsi_meet_desktop_sharing_firefox_max_version_ext_required: '-1'
 
 ###################
@@ -245,8 +245,8 @@ jitsi_meet_default_background: '#474747'
 jitsi_meet_disable_video_background: 'false'
 jitsi_meet_default_remote_display_name: 'Fellow Jitster'
 jitsi_meet_default_local_display_name: 'me'
-jitsi_meet_generate_roomnames_on_welcome_page: 'true'
-jitsi_meet_lang_detection: 'false'    # Allow i18n to detect the system language
+jitsi_meet_generate_roomnames_on_welcome_page: true
+jitsi_meet_lang_detection: false    # Allow i18n to detect the system language
 ```
 
 Screen sharing
