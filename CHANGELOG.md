@@ -1,5 +1,10 @@
 # Change Log
 
+## [v3.0.1](https://github.com/UdelaRInterior/ansible-role-jitsi-meet/tree/v3.0.1)
+
+Thanks to [@tabacha](https://github.com/tabacha):
+  * Fixed the settings that were static in `templates/videobridge_sip-communicator.properties.j2` ([#13](https://github.com/UdelaRInterior/ansible-role-jitsi-meet/pull/13))
+
 ## [v3.0.0](https://github.com/UdelaRInterior/ansible-role-jitsi-meet/tree/v3.0.0)
 
 * **`jitsi_meet_install_recommends: no` changed to `jitsi_meet_install_recommends: yes` on *defaults/main.yml*** (See [PR #5729](https://github.com/jitsi/jitsi-meet/pull/5729))

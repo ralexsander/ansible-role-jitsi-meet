@@ -1,7 +1,7 @@
 jitsi-meet
 =========
 
-[![Galaxy](https://img.shields.io/badge/galaxy-UdelaRInterior.jitsi__meet-blue.svg)](https://galaxy.ansible.com/udelarinterior/jitsi_meet) ![GitHub release (latest by date)](https://img.shields.io/github/v/release/udelarinterior/ansible-role-jitsi-meet?style=social) ![GitHub stars](https://img.shields.io/github/stars/udelarinterior/ansible-role-jitsi-meet?style=social) ![GitHub forks](https://img.shields.io/github/forks/udelarinterior/ansible-role-jitsi-meet?style=social)
+[![Galaxy](https://img.shields.io/badge/galaxy-UdelaRInterior.jitsi__meet-blue.svg)](https://galaxy.ansible.com/udelarinterior/jitsi_meet) ![GitHub tag (latest by date)](https://img.shields.io/github/v/tag/udelarinterior/ansible-role-jitsi-meet?label=release&logo=github&style=social) ![GitHub stars](https://img.shields.io/github/stars/udelarinterior/ansible-role-jitsi-meet?style=social) ![GitHub forks](https://img.shields.io/github/forks/udelarinterior/ansible-role-jitsi-meet?style=social)
 
 Installs and configures the [Jitsi Meet] videoconferencing software.
 
