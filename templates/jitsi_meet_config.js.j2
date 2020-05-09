@@ -170,7 +170,7 @@ var config = {
     desktopSharingChromeExtId: '{{ jitsi_meet_desktop_sharing_chrome_ext_id }}',
 
     // Whether desktop sharing should be disabled on Chrome.
-    desktopSharingChromeDisabled: {{ jitsi_meet_desktop_sharing_chrome_disabled | bool | lower }},
+    desktopSharingChromeDisabled: {{ not ( jitsi_meet_enable_desktop_sharing_chrome | bool ) | lower }},
 
     // The media sources to use when using screen sharing with the Chrome
     // extension.
@@ -180,7 +180,7 @@ var config = {
     desktopSharingChromeMinExtVersion: '0.1',
 
     // Whether desktop sharing should be disabled on Firefox.
-    desktopSharingFirefoxDisabled: {{ jitsi_meet_desktop_sharing_firefox_disabled | bool | lower }},
+    desktopSharingFirefoxDisabled: {{ not ( jitsi_meet_enable_desktop_sharing_firefox | bool ) | lower }},
 
     // Optional desktop sharing frame rate options. Default value: min:5, max:5.
     // desktopSharingFrameRate: {
