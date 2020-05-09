@@ -242,7 +242,7 @@ jitsi_meet_logo_file: images/jitsilogo.png
 jitsi_meet_watermark_file: images/watermark.png
 
 jitsi_meet_default_background: '#474747'
-jitsi_meet_disable_video_background: 'false'
+jitsi_meet_show_video_background: true
 jitsi_meet_default_remote_display_name: 'Fellow Jitster'
 jitsi_meet_default_local_display_name: 'me'
 jitsi_meet_generate_roomnames_on_welcome_page: true

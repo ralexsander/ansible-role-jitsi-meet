@@ -9,7 +9,7 @@ var interfaceConfig = {
      * Whether or not the blurred video background for large video should be
      * displayed on browsers that can support it.
      */
-    DISABLE_VIDEO_BACKGROUND: {{ jitsi_meet_disable_video_background | bool | lower }},
+    DISABLE_VIDEO_BACKGROUND: {{ not ( jitsi_meet_show_video_background | bool ) | lower }},
 
     INITIAL_TOOLBAR_TIMEOUT: 20000,
     TOOLBAR_TIMEOUT: 4000,
