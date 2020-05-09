@@ -86,7 +86,7 @@ var config = {
     // Audio
 
     // Disable measuring of audio levels.
-    disableAudioLevels: {{ jitsi_meet_disable_audio_levels | bool | lower }},
+    disableAudioLevels: {{ not ( jitsi_meet_show_audio_levels | bool ) | lower }},
 
     audioLevelsInterval: {{ jitsi_meet_audio_levels_interval }},
 
