@@ -213,6 +213,18 @@ jitsi_meet_desktop_sharing_firefox_ext_id: 'null'
 jitsi_meet_desktop_sharing_firefox_disabled: false
 jitsi_meet_desktop_sharing_firefox_max_version_ext_required: '-1'
 
+jitsi_meet_channel_last_n: -1
+jitsi_meet_enable_layer_suspension: false
+jitsi_meet_start_audio_only: false
+jitsi_meet_disable_audio_levels: false
+jitsi_meet_audio_levels_interval: 200
+
+jitsi_meet_resolution: 480
+jitsi_meet_constraints_video_aspect_ratio: "16 / 9"
+jitsi_meet_constraints_video_height_ideal: "{{ jitsi_meet_resolution }}"
+jitsi_meet_constraints_video_height_max: 720
+jitsi_meet_constraints_video_height_min: 240
+
 ###################
 ### SIP gateway ###
 jitsi_meet_configure_sip_gateway: false
