@@ -9,7 +9,7 @@ var interfaceConfig = {
      * Whether or not the blurred video background for large video should be
      * displayed on browsers that can support it.
      */
-    DISABLE_VIDEO_BACKGROUND: {{ jitsi_meet_disable_video_background }},
+    DISABLE_VIDEO_BACKGROUND: {{ jitsi_meet_disable_video_background | bool | lower }},
 
     INITIAL_TOOLBAR_TIMEOUT: 20000,
     TOOLBAR_TIMEOUT: 4000,
@@ -25,13 +25,13 @@ var interfaceConfig = {
     BRAND_WATERMARK_LINK: '',
     SHOW_POWERED_BY: false,
     SHOW_DEEP_LINKING_IMAGE: false,
-    GENERATE_ROOMNAMES_ON_WELCOME_PAGE: {{ jitsi_meet_generate_roomnames_on_welcome_page }},
+    GENERATE_ROOMNAMES_ON_WELCOME_PAGE: {{ jitsi_meet_generate_roomnames_on_welcome_page | bool | lower }},
     DISPLAY_WELCOME_PAGE_CONTENT: true,
     DISPLAY_WELCOME_PAGE_TOOLBAR_ADDITIONAL_CONTENT: false,
     APP_NAME: '{{ jitsi_meet_appname }}',
     NATIVE_APP_NAME: '{{ jitsi_meet_appname }}',
     PROVIDER_NAME: 'Jitsi',
-    LANG_DETECTION: {{ jitsi_meet_lang_detection }}, // Allow i18n to detect the system language
+    LANG_DETECTION: {{ jitsi_meet_lang_detection | bool | lower }}, // Allow i18n to detect the system language
     INVITATION_POWERED_BY: true,
 
     /**
