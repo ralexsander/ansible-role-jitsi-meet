@@ -195,12 +195,12 @@ jitsi_meet_authentication: anonymous
 # Privacy-friendly addition, see here for details:
 # https://github.com/jitsi/jitsi-meet/issues/422
 # https://github.com/jitsi/jitsi-meet/pull/427
-jitsi_meet_disable_third_party_requests: false
+jitsi_meet_enable_third_party_requests: true
 
 # Screensharing config for Chrome. You'll need to build and package a browser
 # extension specifically for your domain; see https://github.com/jitsi/jidesha
 jitsi_meet_desktop_sharing_chrome_method: 'ext'
-jitsi_meet_desktop_sharing_chrome_disabled: false
+jitsi_meet_enable_desktop_sharing_chrome: true
 jitsi_meet_desktop_sharing_chrome_ext_id: 'diibjkoicjeejcmhdnailmkgecihlobk'
 
 # Path to local extension on disk, for copying to target host. The remote filename
@@ -210,13 +210,13 @@ jitsi_meet_desktop_sharing_chrome_extension_filename: ''
 # Screensharing config for Firefox. Set max_version to '42' and disabled to 'false'
 # if you want to use screensharing under Firefox.
 jitsi_meet_desktop_sharing_firefox_ext_id: 'null'
-jitsi_meet_desktop_sharing_firefox_disabled: false
+jitsi_meet_enable_desktop_sharing_firefox: true
 jitsi_meet_desktop_sharing_firefox_max_version_ext_required: '-1'
 
 jitsi_meet_channel_last_n: -1
 jitsi_meet_enable_layer_suspension: false
 jitsi_meet_start_audio_only: false
-jitsi_meet_disable_audio_levels: false
+jitsi_meet_show_audio_levels: false
 jitsi_meet_audio_levels_interval: 200
 
 jitsi_meet_resolution: 480
@@ -254,7 +254,7 @@ jitsi_meet_logo_file: images/jitsilogo.png
 jitsi_meet_watermark_file: images/watermark.png
 
 jitsi_meet_default_background: '#474747'
-jitsi_meet_disable_video_background: 'false'
+jitsi_meet_show_video_background: true
 jitsi_meet_default_remote_display_name: 'Fellow Jitster'
 jitsi_meet_default_local_display_name: 'me'
 jitsi_meet_generate_roomnames_on_welcome_page: true
