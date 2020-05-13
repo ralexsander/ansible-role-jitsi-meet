@@ -20,10 +20,3 @@
       question: jigasi/sip-password
       value: "{{ jitsi_meet_jigasi_password }}"
       vtype: string
-
-- name: Add videobridge sip-communicator config
-  template:
-    src: "{{ jitsi_meet_jigasi_videobridge_sip_template }}"
-    dest: /etc/jitsi/videobridge/sip-communicator.properties
-    mode: 0644
-  notify: restart jitsi-videobridge

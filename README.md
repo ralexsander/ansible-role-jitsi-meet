@@ -42,8 +42,8 @@ jitsi_meet_use_stun_turn: false
 
 # The STUN servers that will be used in the peer to peer connections
 jitsi_meet_stun_servers:
-  - 'stun:meet-jit-si-turnrelay.jitsi.net:443'
-  # - 'stun:{{ jitsi_meet_server_name }}:443'
+  - 'meet-jit-si-turnrelay.jitsi.net:443'
+  # - '{{ jitsi_meet_server_name }}:443'
 
 # Enable the p2p mode
 jitsi_meet_enable_p2p_mode: true
@@ -166,7 +166,8 @@ jitsi_meet_jicofo_port: 5347
 # When using log aggregation for jitsi-meet components, set to "WARNING".
 jitsi_meet_jicofo_loglevel: INFO
 
-jitsi_meet_jigasi_jicofo_sip_template: jicofo_sip-communicator.properties.j2
+# If you wish, you can use your own jinja template indicating another path
+jitsi_meet_jicofo_sip_template: jicofo_sip-communicator.properties.j2
 
 
 ###################
@@ -176,16 +177,33 @@ jitsi_meet_jigasi_jicofo_sip_template: jicofo_sip-communicator.properties.j2
 # https://github.com/jitsi/jitsi-meet/blob/master/doc/manual-install.md
 jitsi_meet_videobridge_port: 5347
 jitsi_meet_videobridge_loglevel: INFO
-jitsi_meet_videobridge_opts: '--apis=rest,'             # comma separated list
+jitsi_meet_videobridge_opts: '--apis=,'            # comma separated list '--apis=rest,'
 
-jitsi_meet_videobridge_statistics_enable: false
-jitsi_meet_videobridge_statistics_interval: 5000
-jitsi_meet_videobridge_statistics_transport: 'colibri,xmpp'  # comma separated list
+jitsi_meet_videobridge_statistics_enable: true
+jitsi_meet_videobridge_statistics_interval: 1000
+jitsi_meet_videobridge_statistics_transport: 'muc' # comma separated list: 'muc,colibri,xmpp'
 
-# Configure nginx reverse proxy to publish /colibri/stats over HTTPS
+# Configure reverse proxy to publish colibri/stats over HTTPS
 # https://{{ jitsi_meet_server_name }}/colibri/stats
+# YOU SHOULD ALSO ENABLE 'rest' in jitsi_meet_videobridge_opts and
+# 'colibri,xmpp' in jitsi_meet_videobridge_statistics_transport
 jitsi_meet_expose_colibri_stats: false
 
+# (Dictionary type) Other servers credentials to enable the MUC (Multi User Chat) mode.
+# https://github.com/jitsi/jitsi-videobridge/blob/master/doc/muc.md#legacy-videobridge-configuration
+jitsi_meet_videobridge_other_xmpp_servers: {}
+  # xmppserver1:
+  #   hostname: example.net
+  #   domain: auth.example.net
+  #   username: jvb
+  #   password: $PASSWORD
+  #   muc_jids: JvbBrewery@internal.auth.example.net
+  #   muc: JvbBrewery@internal.auth.boris2.jitsi.net
+  #   muc_nickname: unique-instance-id
+  #   # disable_certificate_verification: true
+
+# If you wish, you can use your own jinja template indicating another path
+jitsi_meet_videobridge_sip_template: videobridge_sip-communicator.properties.j2
 
 ############
 ### Meet ###
@@ -230,8 +248,6 @@ jitsi_meet_constraints_video_height_min: 240
 jitsi_meet_configure_sip_gateway: false
 jitsi_meet_jigasi_account: sipnumber@sip-provider.name
 jitsi_meet_jigasi_password: fdi49fndKjhe3
-
-jitsi_meet_jigasi_videobridge_sip_template: videobridge_sip-communicator.properties.j2
 
 ########################
 ### UI customization ###

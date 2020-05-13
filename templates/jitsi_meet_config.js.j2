@@ -360,7 +360,7 @@ var config = {
         stunServers: [
 
 {% for stun_server in jitsi_meet_stun_servers %}
-            { urls: '{{ stun_server }}' },
+            { urls: 'stun:{{ stun_server }}' },
 {% endfor %}
 
         ],
