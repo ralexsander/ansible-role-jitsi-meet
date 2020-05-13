@@ -1,10 +1,7 @@
 ---
 galaxy_info:
   role_name: jitsi_meet
-  author:
-    - '@ageis'
-    - '@conorsch'
-    - '@santiagomr'
+  author: '@freedomofpress (@ageis and @conorsch) now maintained by @UdelaRInterior (@santiagomr)'
   description: Installs Jitsi Meet videoconferencing software
   company:
     - '@freedomofpress'
