@@ -2,7 +2,7 @@
 
 - name: Copy Jitsi Videobridge config file.
   template:
-    src: videobridge_config.j2
+    src: "{{ jitsi_meet_videobridge_config_template }}"
     dest: /etc/jitsi/videobridge/config
     owner: root
     group: root

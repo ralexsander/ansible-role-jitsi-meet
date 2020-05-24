@@ -51,6 +51,10 @@ jitsi_meet_ssl_key_path: ''
 # If you prefer to manage web vhosts via a separate role, set this to false.
 jitsi_meet_configure_nginx: true
 
+# If you wish, you can use your own jitsi_meet_config.js template indicating another path
+jitsi_meet_nginx_conf:  "jitsi_meet_nginx.conf.j2"
+
+
 
 
 ###########################################
@@ -152,6 +156,9 @@ jitsi_meet_jicofo_loglevel: INFO
 # If you wish, you can use your own jinja template indicating another path
 jitsi_meet_jicofo_sip_template: jicofo_sip-communicator.properties.j2
 
+# If you wish, you can use your own jinja template indicating another path
+jitsi_meet_jicofo_config_template: jicofo_config.j2
+
 
 ###################
 ### Videobridge ###
@@ -165,6 +172,8 @@ jitsi_meet_videobridge_opts: '--apis=,'            # comma separated list '--api
 jitsi_meet_videobridge_statistics_enable: true
 jitsi_meet_videobridge_statistics_interval: 1000
 jitsi_meet_videobridge_statistics_transport: 'muc' # comma separated list: 'muc,colibri,xmpp'
+
+jitsi_meet_videobridge_config_template:  videobridge_config.j2
 
 # Configure reverse proxy to publish colibri/stats over HTTPS
 # https://{{ jitsi_meet_server_name }}/colibri/stats
@@ -190,6 +199,14 @@ jitsi_meet_videobridge_sip_template: videobridge_sip-communicator.properties.j2
 
 ############
 ### Meet ###
+
+# If you wish, you can use your own config.js template indicating another path
+jitsi_meet_config_js_template: jitsi_meet_config.js.j2
+
+# If you wish, you can use your own interface_config.js template indicating another path
+jitsi_meet_interface_config_js_template: interface_config.js.j2
+
+
 # "anonymous" lets anyone use the videoconference server.
 jitsi_meet_authentication: anonymous
 
@@ -247,6 +264,8 @@ jitsi_meet_welcomepage_description: 'Go ahead, video chat with the whole team. I
 # replaced only if you have a custom CSS file and indicate its path in this variable
 jitsi_meet_css_file: ''
 jitsi_meet_welcome_page_additions_file: welcomePageAdditionalContent.html.j2
+
+jitsi_meet_title_template: "title.html.j2"
 
 jitsi_meet_favicon_file: images/favicon.ico
 jitsi_meet_logo_file: images/jitsilogo.png
