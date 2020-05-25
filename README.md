@@ -68,6 +68,8 @@ jitsi_meet_ssl_key_path: ''
 # If you prefer to manage web vhosts via a separate role, set this to false.
 jitsi_meet_configure_nginx: true
 
+# If you wish, you can use your own jitsi_meet_nginx.conf.j2 template indicating another path
+jitsi_meet_nginx_config_template:  "jitsi_meet_nginx.conf.j2"
 
 
 ###########################################
@@ -166,7 +168,8 @@ jitsi_meet_jicofo_port: 5347
 # When using log aggregation for jitsi-meet components, set to "WARNING".
 jitsi_meet_jicofo_loglevel: INFO
 
-# If you wish, you can use your own jinja template indicating another path
+# If you wish, you can use your own jinja config template indicating another path
+jitsi_meet_jicofo_config_template: jicofo_config.j2
 jitsi_meet_jicofo_sip_template: jicofo_sip-communicator.properties.j2
 
 
@@ -202,7 +205,8 @@ jitsi_meet_videobridge_other_xmpp_servers: {}
   #   muc_nickname: unique-instance-id
   #   # disable_certificate_verification: true
 
-# If you wish, you can use your own jinja template indicating another path
+# If you wish, you can use your own jinja config template indicating another path
+jitsi_meet_videobridge_config_template:  videobridge_config.j2
 jitsi_meet_videobridge_sip_template: videobridge_sip-communicator.properties.j2
 
 ############
@@ -243,6 +247,10 @@ jitsi_meet_constraints_video_height_ideal: "{{ jitsi_meet_resolution }}"
 jitsi_meet_constraints_video_height_max: 720
 jitsi_meet_constraints_video_height_min: 240
 
+# If you wish, you can use your own jinja config template indicating another path
+jitsi_meet_config_js_template: jitsi_meet_config.js.j2
+jitsi_meet_interface_config_js_template: interface_config.js.j2
+
 ###################
 ### SIP gateway ###
 jitsi_meet_configure_sip_gateway: false
@@ -264,6 +272,7 @@ jitsi_meet_welcomepage_description: 'Go ahead, video chat with the whole team. I
 # replaced only if you have a custom CSS file and indicate its path in this variable
 jitsi_meet_css_file: ''
 jitsi_meet_welcome_page_additions_file: welcomePageAdditionalContent.html.j2
+jitsi_meet_title_template: title.html.j2
 
 jitsi_meet_favicon_file: images/favicon.ico
 jitsi_meet_logo_file: images/jitsilogo.png

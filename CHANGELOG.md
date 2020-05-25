@@ -1,5 +1,10 @@
 # Change Log
 
+## [v4.1.0](https://github.com/UdelaRInterior/ansible-role-jitsi-meet/tree/v4.1.0)
+
+Thanks to [@tabacha](https://github.com/tabacha):
+  * Now can be used custom versions of all jinja templates changing a variable to indicate its path ([#22](https://github.com/UdelaRInterior/ansible-role-jitsi-meet/pull/22))
+
 ## [v4.0.0](https://github.com/UdelaRInterior/ansible-role-jitsi-meet/tree/v4.0.0)
 
 * Now isn't necessary add the prefix 'stun:' in `jitsi_meet_stun_servers` list
