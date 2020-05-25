@@ -52,7 +52,7 @@ jitsi_meet_ssl_key_path: ''
 jitsi_meet_configure_nginx: true
 
 # If you wish, you can use your own jitsi_meet_config.js template indicating another path
-jitsi_meet_nginx_conf:  "jitsi_meet_nginx.conf.j2"
+jitsi_meet_nginx_config_template:  "jitsi_meet_nginx.conf.j2"
 
 
 
