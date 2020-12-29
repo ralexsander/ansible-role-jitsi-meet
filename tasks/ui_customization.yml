@@ -3,7 +3,7 @@
 - name: Application configuration file
   template:
     dest: "/usr/share/jitsi-meet/interface_config.js"
-    src: interface_config.js.j2
+    src: "{{ jitsi_meet_interface_config_js_template }}"
     owner: root
     group: root
     mode: "0644"
@@ -16,7 +16,7 @@
 - name: Title configuration file
   template:
     dest: "/usr/share/jitsi-meet/title.html"
-    src: title.html.j2
+    src: "{{ jitsi_meet_title_template }}"
     owner: root
     group: root
     mode: "0644"

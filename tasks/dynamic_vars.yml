@@ -50,3 +50,17 @@
   # Permit custom secrets in the template; only set the var if no custom secret is declared.
   when: jitsi_meet_jicofo_password is not defined or
         not jitsi_meet_jicofo_password
+
+- name: Read Jitsi Videobridge MUC UUID
+  command: >
+    perl -lane '/shard.MUC_NICKNAME=(.*)$/ && print $1'
+    /etc/jitsi/videobridge/sip-communicator.properties
+  register: jitsi_meet_videobridge_muc_uuid_result
+  changed_when: false
+  check_mode: no
+  failed_when: jitsi_meet_videobridge_muc_uuid_result.rc != 0 or
+               not jitsi_meet_videobridge_muc_uuid_result.stdout
+
+- name: Set fact for Jitsi Videobridge MUC UUID
+  set_fact:
+    jitsi_meet_videobridge_muc_uuid: "{{ jitsi_meet_videobridge_muc_uuid_result.stdout }}"
